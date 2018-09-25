@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +8,40 @@ namespace PHOCUS.Character
     public class PlayerAnimator : MonoBehaviour
     {
         Animator anim;
+        PlayerController player;
 
         void Start()
         {
             anim = GetComponentInChildren<Animator>();
+            player = GetComponent<PlayerController>();
+        }
+
+        void Update()
+        {
+            HandleLayers();    
+        }
+
+        private void HandleLayers()
+        {
+            if (player.isAttacking)
+            {
+                ActivateLayer("Attack Layer");
+            }
+            else
+            {
+                ActivateLayer("Base Layer");
+            }
         }
 
         public void Move(float horizontalValue)
         {
-            anim.SetFloat("Move", Mathf.Abs(horizontalValue));
+            if (horizontalValue == 0)
+            {
+                anim.SetBool("Move", false);
+                return;
+            }
+            anim.SetBool("Move", true);
+            anim.SetFloat("Horizontal", horizontalValue);
         }
 
         public void Jump(bool isJumping)
@@ -37,7 +63,7 @@ namespace PHOCUS.Character
             return anim.GetCurrentAnimatorClipInfo(0).Length;
         }
 
-        public void Attack(int index)
+        public void Attack(int index, float horizontal)
         {
             switch (index)
             {
@@ -51,6 +77,16 @@ namespace PHOCUS.Character
                     anim.SetTrigger("Attack03");
                     break;
             }
+        }
+
+        void ActivateLayer(string layerName)
+        {
+            for (int i = 0; i < anim.layerCount; i++)
+            {
+                anim.SetLayerWeight(i, 0);
+            }
+
+            anim.SetLayerWeight(anim.GetLayerIndex(layerName), 1);
         }
     }
 }

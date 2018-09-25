@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114370872578832772}
   - component: {fileID: 114438984195841730}
   - component: {fileID: 114139692898897080}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -56,9 +56,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4589511095796838}
-  - component: {fileID: 212193644459047080}
   - component: {fileID: 95318203740046462}
-  m_Layer: 11
+  - component: {fileID: 212890990644225448}
+  m_Layer: 14
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1551591606278228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.097, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4589511095796838}
@@ -117,7 +117,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -163,7 +163,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.035175353, y: -0.24271059}
+  m_Offset: {x: -0.035175323, y: -0.18370533}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -174,7 +174,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2954736, y: 1.4854212}
+  m_Size: {x: 1.2954736, y: 1.8116865}
   m_EdgeRadius: 0
 --- !u!95 &95318203740046462
 Animator:
@@ -216,8 +216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb0596ce40a4a94dae0e457ed8843bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  damage: 10
+  MaxHealth: 100
+  Damage: 10
+  Gems: 0
 --- !u!114 &114438984195841730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -229,9 +230,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fb91d255cbbfe4d9b7e7d55f8a4108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
-  jumpForce: 6
+  MovementSpeed: 5
+  JumpForce: 6
   AttackSpeed: 0.6
+  horizontalValue: 0
   isAttacking: 0
 --- !u!114 &114869693580515492
 MonoBehaviour:
@@ -244,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372aad314b712df4681914ff47c54993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &212193644459047080
+--- !u!212 &212890990644225448
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,7 +280,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e520067127a1e134c80427f1654a4fb4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace PHOCUS.Character
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] float movementSpeed = 3f;
-        [SerializeField] float jumpForce = 5f;
-        [SerializeField] float AttackSpeed = 1.5f;
+        public float MovementSpeed = 3f;
+        public float JumpForce = 5f;
+        public float AttackSpeed = 1.5f;
+        public float horizontalValue;
+        public bool isAttacking;
 
         Rigidbody2D rigidBody;
         PlayerAnimator playerAnim;
@@ -15,11 +18,11 @@ namespace PHOCUS.Character
 
         bool isGrounded;
         bool resetJump;
-        public bool isAttacking;
-        const int GROUND_LAYER = 8;
-        const float GROUNDED_RAY_DISTANCE = 1.5f;
         int attackIndex = 1;
         float lastHitTime;
+
+        const float GROUNDED_RAY_DISTANCE = 1.5f;
+        const int GROUND_LAYER = 8;
 
         void Start()
         {
@@ -36,19 +39,19 @@ namespace PHOCUS.Character
 
         void HandleMovement()
         {
-            float horizontalValue = Input.GetAxisRaw("Horizontal");
+            horizontalValue = Input.GetAxisRaw("Horizontal");
             isGrounded = IsGrounded();
 
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, JumpForce);
                 playerAnim.Jump(true);
                 StartCoroutine(ResetJumproutine());
+                sprite.flipX = true;
             }
 
-            rigidBody.velocity = new Vector2((horizontalValue * movementSpeed), rigidBody.velocity.y);
+            rigidBody.velocity = new Vector2((horizontalValue * MovementSpeed), rigidBody.velocity.y);
 
-            HandleAnimationDirection(horizontalValue);
             playerAnim.Move(horizontalValue);
         }
 
@@ -63,25 +66,13 @@ namespace PHOCUS.Character
 
         IEnumerator AttackTarget()
         {
-            playerAnim.Attack(attackIndex);
+            playerAnim.Attack(attackIndex, horizontalValue);
             yield return new WaitForSeconds(AttackSpeed);
             isAttacking = false;
             attackIndex++;
 
             if (attackIndex > 3)
                 attackIndex = 1;
-        }
-
-        void HandleAnimationDirection(float horizontalValue)
-        {
-            if (horizontalValue < 0)
-            {
-                sprite.flipX = true;
-            }
-            else if (horizontalValue > 0)
-            {
-                sprite.flipX = false;
-            }
         }
 
         bool IsGrounded()

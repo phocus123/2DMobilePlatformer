@@ -7,4 +7,14 @@ AnimatorOverrideController:
   m_PrefabInternal: {fileID: 0}
   m_Name: KoboldAOC
   m_Controller: {fileID: 9100000, guid: a5c79f36ece14dc4eab8c7681bb8f5f2, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ca928376cc34bd549bf963f9510ef79d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: bec82289e9b01854dbe4c1a77c964819, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b841a7ef87132d5499b6fce70c5cbde4, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b9ec7981fabdf2442868eccffdd3a510, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0075978454857ea47abb5ff1c574e4bb, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 654f3a0c692c02d42a27574df2b2d497, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d02863f8171db5347b2e23c01d5599dd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6e64004f10fd11e4cab84ef388108f40, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 3f710f21d9534304984bf25512e75e2d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3dd8f7374d659174284c42cbc29b2ede, type: 2}

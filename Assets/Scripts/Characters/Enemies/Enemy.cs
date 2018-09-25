@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using PHOCUS.Core;
+using PHOCUS.UI;
+using System;
 
 namespace PHOCUS.Character
 {
-    public class Enemy : MonoBehaviour, IDamageable
+    public class Enemy : MonoBehaviour
     {
         public int Gems;
         public float MoveSpeed;
@@ -14,10 +15,13 @@ namespace PHOCUS.Character
         public int Damage;
         public float maxHealth;
         public Image HealthBar;
-        public GameObject gemPrefab;
+        public GameObject GemPrefab;
+
+        protected Animator anim;
+        protected bool canDamage = true;
+        protected bool isAlive = true;
 
         SpriteRenderer sprite;
-        Animator anim;
         PlayerController player;
         Vector3 currentTarget;
 
@@ -27,10 +31,9 @@ namespace PHOCUS.Character
         float distanceToPlayer;
         float lastHitTime;
         bool inAttackRange;
-        bool canDamage = true;
-        bool isAlive = true;
 
         public float Health { get; set; }
+        public Action<Enemy> OnEnemyDeath = delegate { };
 
         void Start()
         {
@@ -43,73 +46,22 @@ namespace PHOCUS.Character
 
         void Update()
         {
-            distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-            inAttackRange = distanceToPlayer <= AttackRange;
+            GetRanges();
             QueryStates();
+            HandleFlipX();
         }
 
-        public void DealDamage(float damageAmount)
-        {
-            if (canDamage)
-            {
-                canDamage = false;
-                anim.SetTrigger("Hit");
-                bool characterDies = (Health - damageAmount <= 0);
-                Health = Mathf.Clamp(Health - damageAmount, 0, maxHealth);
-                UIManager.Instance.UpdateEnemyHealth(HealthBar, Health / maxHealth);
-
-                StopCoroutine(ChasePlayer());
-                StopCoroutine(AttackTarget());
-                StartCoroutine(ResetBool());
-
-                if (characterDies)
-                {
-                    isAlive = false;
-                    anim.SetTrigger("Death");
-                    float animLength = anim.GetCurrentAnimatorClipInfo(0).Length;
-                    DropLoot();
-                    Destroy(gameObject, animLength);
-                }
-            }
-        }
-
-        void QueryStates()
-        {
-            if (canDamage && isAlive)
-            {
-                if (inAttackRange && State != EnemyState.Attack)
-                    ExecuteAttackState();
-                if (!inAttackRange && State != EnemyState.Follow)
-                    ExecuteFollowState();
-            }
-        }
-
-        void ExecuteAttackState()
-        {
-            State = EnemyState.Attack;
-            StopAllCoroutines();
-            StartCoroutine(AttackTarget());
-        }
-
-        void ExecuteFollowState()
-        {
-            State = EnemyState.Follow;
-            StopAllCoroutines();
-            StartCoroutine(ChasePlayer());
-        }
-
-        IEnumerator ChasePlayer()
+        protected IEnumerator ChasePlayer()
         {
             while (distanceToPlayer >= AttackRange)
             {
                 currentTarget = player.transform.position;
                 transform.position = Vector2.MoveTowards(transform.position, new Vector3(currentTarget.x, transform.position.y, 0), MoveSpeed * Time.deltaTime);
-                HandleMoveDirection();
                 yield return new WaitForEndOfFrame();
             }
         }
 
-        IEnumerator AttackTarget()
+        protected  IEnumerator AttackTarget()
         {
             bool attackerStillAlive = Health >= Mathf.Epsilon;
 
@@ -126,33 +78,60 @@ namespace PHOCUS.Character
             }
         }
 
-        void HandleMoveDirection()
+        protected IEnumerator ResetBool()
         {
-            var direction = transform.position - player.transform.position;
+            yield return new WaitForSeconds(.2f);
+            canDamage = true;
+        }
 
-            if (direction.x < 0)
+        void GetRanges()
+        {
+            distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+            var direction = player.transform.position - transform.position;
+            anim.SetFloat("Horizontal", direction.normalized.x);
+            inAttackRange = distanceToPlayer <= AttackRange;
+        }
+
+
+        void QueryStates()
+        {
+            if (canDamage && isAlive)
+            {
+                if (inAttackRange && State != EnemyState.Attack)
+                    ExecuteAttackState();
+                if (!inAttackRange && State != EnemyState.Follow)
+                    ExecuteFollowState();
+            }
+        }
+
+        void HandleFlipX()
+        {
+            if (anim.GetFloat("Horizontal") > 0)
                 sprite.flipX = true;
-            else
+            else if (anim.GetFloat("Horizontal") < 0)
                 sprite.flipX = false;
+        }
+
+        void ExecuteAttackState()
+        {
+            anim.SetBool("Move", false);
+            State = EnemyState.Attack;
+            StopAllCoroutines();
+            StartCoroutine(AttackTarget());
+        }
+
+        void ExecuteFollowState()
+        {
+            anim.SetBool("Move", true);
+            State = EnemyState.Follow;
+            StopAllCoroutines();
+            StartCoroutine(ChasePlayer());
         }
 
         void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, AttackRange);
-        }
-
-        void DropLoot()
-        {
-            var gem = Instantiate(gemPrefab, transform.position, Quaternion.identity);
-            gem.GetComponent<Gem>().Gems = Gems;
-        }
-
-
-        IEnumerator ResetBool()
-        {
-            yield return new WaitForSeconds(.5f);
-            canDamage = true;
         }
     }
 }

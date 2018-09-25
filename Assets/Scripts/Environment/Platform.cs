@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using PHOCUS.Core;
+using PHOCUS.UI;
 
 namespace PHOCUS.Environment
 {

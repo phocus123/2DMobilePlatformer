@@ -1,6 +1,6 @@
-﻿using PHOCUS.Core;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using PHOCUS.UI;
 
 namespace PHOCUS.Character
 {
