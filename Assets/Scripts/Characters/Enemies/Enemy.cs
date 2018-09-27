@@ -31,6 +31,7 @@ namespace PHOCUS.Character
         float distanceToPlayer;
         float lastHitTime;
         bool inAttackRange;
+        public bool isAttacking;
 
         public float Health { get; set; }
         public Action<Enemy> OnEnemyDeath = delegate { };
@@ -63,19 +64,17 @@ namespace PHOCUS.Character
 
         protected  IEnumerator AttackTarget()
         {
-            bool attackerStillAlive = Health >= Mathf.Epsilon;
+            bool isTimeToHitAgain = Time.time - lastHitTime > AttackSpeed;
 
-            while (attackerStillAlive)
+            if (isTimeToHitAgain)
             {
-                bool isTimeToHitAgain = Time.time - lastHitTime > AttackSpeed;
-
-                if (isTimeToHitAgain)
-                {
-                    anim.SetTrigger("Attack");
-                    lastHitTime = Time.time;
-                }
-                yield return new WaitForSeconds(AttackSpeed);
+                isAttacking = true;
+                anim.SetTrigger("Attack");
+                lastHitTime = Time.time;
             }
+
+            yield return new WaitForSeconds(AttackSpeed);
+            isAttacking = false;
         }
 
         protected IEnumerator ResetBool()
@@ -97,9 +96,9 @@ namespace PHOCUS.Character
         {
             if (canDamage && isAlive)
             {
-                if (inAttackRange && State != EnemyState.Attack)
+                if (inAttackRange )
                     ExecuteAttackState();
-                if (!inAttackRange && State != EnemyState.Follow)
+                if (!inAttackRange)
                     ExecuteFollowState();
             }
         }
@@ -122,10 +121,13 @@ namespace PHOCUS.Character
 
         void ExecuteFollowState()
         {
-            anim.SetBool("Move", true);
-            State = EnemyState.Follow;
-            StopAllCoroutines();
-            StartCoroutine(ChasePlayer());
+            if (!isAttacking)
+            {
+                anim.SetBool("Move", true);
+                State = EnemyState.Follow;
+                StopAllCoroutines();
+                StartCoroutine(ChasePlayer());
+            }
         }
 
         void OnDrawGizmos()
