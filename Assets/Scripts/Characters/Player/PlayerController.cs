@@ -8,18 +8,24 @@ namespace PHOCUS.Character
     {
         public float MovementSpeed = 3f;
         public float JumpForce = 5f;
+        public float DoubleJumpForce = 2.5f;
         public float AttackSpeed = 1.5f;
-        public float horizontalValue;
+        public float AttackStaminaCost = 7f;
+        public float JumpStaminaCost = 2f;
         public bool isAttacking;
+        public bool isGrounded;
+        public bool ActionsDisabled;
+        public bool CanDoubleJump;
 
         Rigidbody2D rigidBody;
         PlayerAnimator playerAnim;
         SpriteRenderer sprite;
+        Player player;
 
-        bool isGrounded;
         bool resetJump;
         int attackIndex = 1;
         float lastHitTime;
+        float horizontalValue;
 
         const float GROUNDED_RAY_DISTANCE = 1.5f;
         const int GROUND_LAYER = 8;
@@ -29,12 +35,27 @@ namespace PHOCUS.Character
             rigidBody = GetComponentInChildren<Rigidbody2D>();
             sprite = GetComponentInChildren<SpriteRenderer>();
             playerAnim = GetComponent<PlayerAnimator>();
+            player = GetComponent<Player>();
         }
 
         void Update()
         {
-            HandleAttack();
-            HandleMovement();
+            if (!ActionsDisabled)
+            {
+                HandleAttack();
+                HandleMovement();
+            }
+        }
+
+        public void StopMoving()
+        {
+            rigidBody.velocity = Vector2.zero;
+            playerAnim.StopMoving();
+        }
+
+        bool CheckStamina(float amount)
+        {
+            return amount < player.Stamina;
         }
 
         void HandleMovement()
@@ -42,12 +63,34 @@ namespace PHOCUS.Character
             horizontalValue = Input.GetAxisRaw("Horizontal");
             isGrounded = IsGrounded();
 
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, JumpForce);
-                playerAnim.Jump(true);
-                StartCoroutine(ResetJumproutine());
-                sprite.flipX = true;
+                if (isGrounded && CheckStamina(JumpStaminaCost))
+                {
+                    rigidBody.velocity = new Vector2(rigidBody.velocity.x, JumpForce);
+                    playerAnim.Jump(true);
+                    StartCoroutine(ResetJumproutine());
+                    player.Stamina -= JumpStaminaCost;
+                    CanDoubleJump = true;
+                }
+                else
+                {
+                    if (CanDoubleJump)
+                    {
+                        playerAnim.DoubleJump(true);
+                        CanDoubleJump = false;
+                        rigidBody.velocity = new Vector2(rigidBody.velocity.x, DoubleJumpForce);
+                        playerAnim.Jump(true);
+                        StartCoroutine(ResetJumproutine());
+                        player.Stamina -= JumpStaminaCost;
+                    }
+                }
+            }
+
+                if (!isGrounded && Input.GetMouseButtonDown(0) && CheckStamina(AttackStaminaCost))
+            {
+                playerAnim.AirAttack();
+                player.Stamina -= AttackStaminaCost;
             }
 
             rigidBody.velocity = new Vector2((horizontalValue * MovementSpeed), rigidBody.velocity.y);
@@ -57,10 +100,11 @@ namespace PHOCUS.Character
 
         void HandleAttack()
         {
-            if (Input.GetMouseButtonDown(0) && isGrounded && !isAttacking)
+            if (Input.GetMouseButtonDown(0) && isGrounded && !isAttacking && CheckStamina(AttackStaminaCost))
             {
                 isAttacking = true;
                 StartCoroutine(AttackTarget());
+                player.Stamina -= AttackStaminaCost;
             }
         }
 
@@ -86,6 +130,7 @@ namespace PHOCUS.Character
                 if (!resetJump)
                 {
                     playerAnim.Jump(false);
+                    playerAnim.DoubleJump(false);
                     return true;
                 }
             }

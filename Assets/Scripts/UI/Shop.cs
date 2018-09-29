@@ -10,9 +10,11 @@ namespace PHOCUS.UI
     {
         public GameObject ShopItemPrefab;
         public ShopItem[] Items;
+        public Button BuyButton;
         public Button ExitButton;
         public TextMeshProUGUI GemText;
         public CanvasGroup ShopCanvas;
+        public bool isEnabled;
 
         ShopItem selectedItem;
         Player player; 
@@ -22,6 +24,7 @@ namespace PHOCUS.UI
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
             ShopCanvas = GetComponent<CanvasGroup>();
             ExitButton.onClick.AddListener(ToggleShop);
+            BuyButton.onClick.AddListener(BuyItem);
 
             foreach (var item in Items)
             {
@@ -29,12 +32,14 @@ namespace PHOCUS.UI
             }
 
             SelectItem(Items[0]);
-            UpdateGemsText();
         }
 
         public void ToggleShop()
         {
+            player.TogglePlayerActions();
+            UpdateGemsText();
             ShopCanvas.Toggle();
+            isEnabled = !isEnabled;
         }
 
         void SelectItem(ShopItem item)
@@ -55,6 +60,22 @@ namespace PHOCUS.UI
         void UpdateGemsText()
         {
             GemText.text = string.Format("{0}G", player.Gems.ToString());
+        }
+
+        void BuyItem()
+        {
+            bool canAfford = selectedItem.GemCost <= player.Gems;
+
+            if (canAfford && !selectedItem.HasBeenPurchased)
+            {
+                selectedItem.BuyItem();
+                player.Gems -= selectedItem.GemCost;
+                UpdateGemsText();
+            }
+            else if (!canAfford && !selectedItem.HasBeenPurchased)
+            {
+                UIManager.Instance.SetAlertText("You do not have enough gems!");
+            }
         }
     }
 }

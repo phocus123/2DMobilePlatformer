@@ -16,22 +16,22 @@ namespace PHOCUS.Character
         public float maxHealth;
         public Image HealthBar;
         public GameObject GemPrefab;
+        public bool isAttacking;
+        public bool isAlive = true;
 
         protected Animator anim;
         protected bool canDamage = true;
-        protected bool isAlive = true;
 
         SpriteRenderer sprite;
         PlayerController player;
         Vector3 currentTarget;
 
-        public enum EnemyState { Attack, Follow }
+        public enum EnemyState { Attack, Follow, Wait }
         public EnemyState State;
 
         float distanceToPlayer;
         float lastHitTime;
         bool inAttackRange;
-        public bool isAttacking;
 
         public float Health { get; set; }
         public Action<Enemy> OnEnemyDeath = delegate { };
@@ -54,7 +54,7 @@ namespace PHOCUS.Character
 
         protected IEnumerator ChasePlayer()
         {
-            while (distanceToPlayer >= AttackRange)
+            while (distanceToPlayer >= AttackRange && !isAttacking)
             {
                 currentTarget = player.transform.position;
                 transform.position = Vector2.MoveTowards(transform.position, new Vector3(currentTarget.x, transform.position.y, 0), MoveSpeed * Time.deltaTime);
@@ -62,7 +62,7 @@ namespace PHOCUS.Character
             }
         }
 
-        protected  IEnumerator AttackTarget()
+        protected IEnumerator AttackTarget()
         {
             bool isTimeToHitAgain = Time.time - lastHitTime > AttackSpeed;
 
@@ -75,6 +75,8 @@ namespace PHOCUS.Character
 
             yield return new WaitForSeconds(AttackSpeed);
             isAttacking = false;
+            State = EnemyState.Wait;
+            anim.SetBool("Move", true);
         }
 
         protected IEnumerator ResetBool()
@@ -96,9 +98,9 @@ namespace PHOCUS.Character
         {
             if (canDamage && isAlive)
             {
-                if (inAttackRange )
+                if (inAttackRange && State != EnemyState.Attack)
                     ExecuteAttackState();
-                if (!inAttackRange)
+                if (!inAttackRange && State != EnemyState.Follow)
                     ExecuteFollowState();
             }
         }

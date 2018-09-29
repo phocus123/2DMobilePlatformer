@@ -190,7 +190,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsTriggered: 0
-  countdownTime: 10
 --- !u!212 &212513078611446016
 SpriteRenderer:
   m_ObjectHideFlags: 1

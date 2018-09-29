@@ -346,6 +346,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNameText: {fileID: 114013965579843232}
   itemCostText: {fileID: 114693029024271794}
+  PathController: {fileID: 0}
+  GemCost: 0
+  HasBeenPurchased: 0
 --- !u!114 &114964706010255076
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -61,6 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\InteractableText.cs" />
+    <Compile Include="Assets\PathDecorations.cs" />
     <Compile Include="Assets\Scripts\Characters\Attack.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Enemy.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Goblin\Goblin.cs" />
@@ -72,6 +74,8 @@
     <Compile Include="Assets\Scripts\Characters\Player\PlayerAnimator.cs" />
     <Compile Include="Assets\Scripts\Characters\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Characters\Shopkeeper\Shopkeeper.cs" />
+    <Compile Include="Assets\Scripts\Environment\Path.cs" />
+    <Compile Include="Assets\Scripts\Environment\PathController.cs" />
     <Compile Include="Assets\Scripts\Environment\Platform.cs" />
     <Compile Include="Assets\Scripts\Environment\PlatformController.cs" />
     <Compile Include="Assets\Scripts\Environment\Portal.cs" />

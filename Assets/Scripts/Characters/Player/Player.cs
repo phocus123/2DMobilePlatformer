@@ -7,18 +7,42 @@ namespace PHOCUS.Character
     public class Player : MonoBehaviour, IDamageable
     {
         public float MaxHealth;
+        public float MaxStamina;
+        public float StaminaRegenAmount = 0.5f;
         public int Damage;
-        public int Gems;
+        [SerializeField] int gems;
 
         PlayerAnimator anim;
+        PlayerController playerController;
         bool canDamage = true;
 
         public float Health { get; set; }
+        public float Stamina { get; set; }
+
+        public int Gems
+        {
+            get { return gems; }
+            set
+            {
+                gems = value;
+                UIManager.Instance.UpdateGemCount(gems);
+            }
+        }
 
         void Start()
         {
             anim = GetComponent<PlayerAnimator>();
+            playerController = GetComponent<PlayerController>();
             Health = MaxHealth;
+            Stamina = MaxStamina;
+            UIManager.Instance.UpdateGemCount(gems);
+        }
+
+        void Update()
+        {
+            Stamina += StaminaRegenAmount * Time.deltaTime;
+            Stamina = Mathf.Clamp(Stamina, 0, MaxStamina);
+            UIManager.Instance.UpdateStamina(Stamina, MaxStamina);
         }
 
         public void DealDamage(float damageAmount)
@@ -43,7 +67,12 @@ namespace PHOCUS.Character
         public void AddGems(int amount)
         {
             Gems += amount;
-            UIManager.Instance.UpdateGemCount(Gems);
+        }
+
+        public void TogglePlayerActions()
+        {
+            playerController.ActionsDisabled = !playerController.ActionsDisabled;
+            playerController.StopMoving();
         }
 
         bool isKillingBlow(float damage)

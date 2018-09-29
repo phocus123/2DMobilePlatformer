@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6917d625c7a9e0d4b96c01c30ec0d016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gems: 2
+  Gems: 3
   MoveSpeed: 2
   AttackSpeed: 1.8
   AttackRange: 1.2
@@ -392,8 +392,9 @@ MonoBehaviour:
   maxHealth: 50
   HealthBar: {fileID: 114225987320440436}
   GemPrefab: {fileID: 1612489179879164, guid: bad5a80203b324042a19bced8b967fb0, type: 2}
-  State: 0
   isAttacking: 0
+  isAlive: 1
+  State: 0
 --- !u!212 &212121862127677168
 SpriteRenderer:
   m_ObjectHideFlags: 1

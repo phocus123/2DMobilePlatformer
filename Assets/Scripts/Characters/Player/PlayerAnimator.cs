@@ -44,9 +44,24 @@ namespace PHOCUS.Character
             anim.SetFloat("Horizontal", horizontalValue);
         }
 
+        public void StopMoving()
+        {
+            anim.SetBool("Move", false);
+        }
+
         public void Jump(bool isJumping)
         {
             anim.SetBool("Jump", isJumping);
+        }
+
+        public void DoubleJump(bool isDoubleJump)
+        {
+            anim.SetBool("DoubleJump", isDoubleJump);
+        }
+
+        public void AirAttack()
+        {
+            anim.SetTrigger("AirAttack");
         }
 
         public void Hit()

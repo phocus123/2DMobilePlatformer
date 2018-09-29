@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4337360900927414}
   - component: {fileID: 212692413186728306}
   - component: {fileID: 95923390380266178}
-  m_Layer: 0
+  - component: {fileID: 61790419273243828}
+  m_Layer: 15
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,6 +98,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.626798, y: 1.4349518}
   m_EdgeRadius: 0
+--- !u!61 &61790419273243828
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1191224976091538}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.026885599, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.55567867, y: 1}
+  m_EdgeRadius: 0
 --- !u!95 &95923390380266178
 Animator:
   serializedVersion: 3
@@ -127,6 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shop: {fileID: 0}
+  worldSpaceCanvas: {fileID: 0}
+  InteractPrefab: {fileID: 1136249829178148, guid: 75771e699a3c3914cbb0ef794e4ddf10,
+    type: 2}
 --- !u!212 &212692413186728306
 SpriteRenderer:
   m_ObjectHideFlags: 1

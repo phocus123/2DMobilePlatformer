@@ -9,27 +9,32 @@ namespace PHOCUS.UI
     public class UIManager : Singleton<UIManager>
     {
         [Header("Alerts")]
-        public TextMeshProUGUI alertText;
-        public CanvasGroup alertGroup;
-        [Header("Player Health")]
-        public Image playerHealth;
-        public TextMeshProUGUI healthText;
-        [Header("Gem Count")]
-        public TextMeshProUGUI gemText;
+        public TextMeshProUGUI AlertText;
+        public CanvasGroup AlertGroup;
+        [Header("Player HUD")]
+        public Image PlayerHealth;
+        public TextMeshProUGUI HealthText;
+        public Image PlayerStamina;
+        public TextMeshProUGUI GemText;
         [Header("Combat Text")]
         [SerializeField] GameObject combatTextPrefab;
         [SerializeField] Canvas combatTextCanvas;
         [SerializeField] float speed;
 
+        bool alertActive;
+
         public void SetAlertText(string text)
         {
-            alertGroup.alpha = 1;
-            alertText.text = text;
-            StartCoroutine(FadeAlertText());
+            AlertGroup.alpha = 1;
+            AlertText.text = text;
+
+            if (!alertActive)
+                StartCoroutine(FadeAlertText());
         }
 
         IEnumerator FadeAlertText()
         {
+            alertActive = true;
             float progress = 1f;
 
             yield return new WaitForSeconds(1.5f);
@@ -37,16 +42,24 @@ namespace PHOCUS.UI
             while (progress > 0)
             {
                 progress -= Time.deltaTime;
-                alertGroup.alpha = Mathf.Lerp(0, 1, progress);
+                AlertGroup.alpha = Mathf.Lerp(0, 1, progress);
                 yield return null;
             }
+
+            alertActive = false;
         }
 
         public void UpdatePlayerHealth(float currentHealth, float maxHealth)
         {
             float health = currentHealth / maxHealth;
-            playerHealth.fillAmount = health;
-            healthText.text = string.Format("{0}/{1}", currentHealth, maxHealth);
+            PlayerHealth.fillAmount = health;
+            HealthText.text = string.Format("{0}/{1}", currentHealth, maxHealth);
+        }
+
+        public void UpdateStamina(float current, float max)
+        {
+            float stamina = current / max;
+            PlayerStamina.fillAmount = stamina;
         }
 
         public void UpdateEnemyHealth(Image healthBar, float healthPercentage)
@@ -56,7 +69,7 @@ namespace PHOCUS.UI
 
         public void UpdateGemCount(int count)
         {
-            gemText.text = count.ToString();
+            GemText.text = count.ToString();
         }
 
         public void TriggerCombatText(Vector2 position, float healthValue, CombatTextType combatTextType)

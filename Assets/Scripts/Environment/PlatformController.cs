@@ -1,6 +1,5 @@
 ﻿using PHOCUS.Character;
 using PHOCUS.UI;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,19 +14,21 @@ namespace PHOCUS.Environment
 
     public class PlatformController : MonoBehaviour
     {
-        [HideInInspector] public Platform[] Platforms;
+        [HideInInspector] public bool isReadyToSpawn;
         public float CountdownTime = 10f;
         public Transform SpawnPoint;
         public Portal Portal;
         public GameObject shopkeeperPrefab;
-        public bool isReadyToSpawn;
+        [Header("Platforms")]
+        public Platform[] Platforms;
         [Header("Enemy Spawn Pattern")]
         public SpawnPattern[] SpawnPatterns;
 
         List<Enemy> enemiesSpawned = new List<Enemy>();
         bool hasSpawned;
-        bool isFinalWave;
-        int spawnIndex = 0;
+        bool isFinalEnemy;
+        int spawnPatterIndex = 0;
+        int spawnGroupIndex = 0;
 
         void Start()
         {
@@ -38,36 +39,40 @@ namespace PHOCUS.Environment
         void Update()
         {
             HandleEnemies();
+            CheckFinalEnemy();
         }
 
         void HandleEnemies()
         {
-            if (isReadyToSpawn && !hasSpawned && spawnIndex < SpawnPatterns.Length)
+            if (isReadyToSpawn && !hasSpawned && spawnPatterIndex < SpawnPatterns.Length)
             {
                 Portal.GetComponentInChildren<Animator>().SetBool("Animate", true);
-
                 StartCoroutine(SpawnEnemyOverTime());
             }
         }
 
         void UpdateEnemy(Enemy enemy)
         {
-            if (isFinalWave)
+            if (isFinalEnemy && enemiesSpawned.Count == 1)
                 TriggerPlatformComplete();
 
-            if (enemiesSpawned.Count == 1 && spawnIndex < SpawnPatterns.Length - 1)
+            if (enemiesSpawned.Count == 1 && spawnPatterIndex < SpawnPatterns.Length - 1)
             {
-                spawnIndex = Mathf.Clamp(spawnIndex, 0, SpawnPatterns.Length - 1);
-                spawnIndex++;
+                spawnPatterIndex = Mathf.Clamp(spawnPatterIndex, 0, SpawnPatterns.Length - 1);
+                spawnPatterIndex++;
                 isReadyToSpawn = true;
                 hasSpawned = false;
             }
             
             enemy.OnEnemyDeath -= UpdateEnemy;
             enemiesSpawned.Remove(enemy);
+        }
 
-            if (enemiesSpawned.Count == 0 && spawnIndex == SpawnPatterns.Length - 1)
-                isFinalWave = true;
+        void CheckFinalEnemy()
+        {
+            if(spawnPatterIndex == SpawnPatterns.Length - 1)
+                if(spawnGroupIndex == SpawnPatterns[spawnPatterIndex].SpawnGroup.Length -1)
+                    isFinalEnemy = true;
         }
 
         void TriggerPlatformComplete()
@@ -80,16 +85,16 @@ namespace PHOCUS.Environment
         IEnumerator SpawnEnemyOverTime()
         {
             isReadyToSpawn = false;
-            string message = string.Format("Spawning wave: {0}/{1}", spawnIndex + 1, SpawnPatterns.Length);
+            string message = string.Format("Spawning wave: {0}/{1}", spawnPatterIndex + 1, SpawnPatterns.Length);
             UIManager.Instance.SetAlertText(message);
-            yield return new WaitForSeconds(2f);
 
-            for (int i = 0; i < SpawnPatterns[spawnIndex].SpawnGroup.Length; i++)
+            for (spawnGroupIndex = 0; spawnGroupIndex < SpawnPatterns[spawnPatterIndex].SpawnGroup.Length; spawnGroupIndex++)
             {
-                var enemy = Instantiate(SpawnPatterns[spawnIndex].SpawnGroup[i], SpawnPoint.position, Quaternion.identity, SpawnPoint.transform).GetComponent<Enemy>();
+                var enemy = Instantiate(SpawnPatterns[spawnPatterIndex].SpawnGroup[spawnGroupIndex], SpawnPoint.position, Quaternion.identity, SpawnPoint.transform).GetComponent<Enemy>();
                 enemiesSpawned.Add(enemy);
                 enemy.OnEnemyDeath += UpdateEnemy;
                 hasSpawned = true;
+                CheckFinalEnemy();
                 yield return new WaitForSeconds(2f);
             }
         }
@@ -99,6 +104,5 @@ namespace PHOCUS.Environment
             yield return new WaitForSeconds(1.5f);
             Instantiate(shopkeeperPrefab, SpawnPoint.position, Quaternion.identity);
         }
-
     }
 }   
