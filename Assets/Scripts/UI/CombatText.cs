@@ -9,7 +9,7 @@ public enum CombatTextType
 
 }
 
-public enum CombatTextDirection
+public enum InstantiateDirection
 {
     UpperCentre,
     UpperLeft,
@@ -22,24 +22,24 @@ public class CombatText : MonoBehaviour {
     const float TEXT_SPEED = .75f;
     Vector2 direction;
     CombatTextType combatTextType;
-    CombatTextDirection combatTextDirection = CombatTextDirection.None;
+    InstantiateDirection instantiateDirection = InstantiateDirection.None;
     
     void Update()
     {
-        if (combatTextDirection == CombatTextDirection.None)
+        if (instantiateDirection == InstantiateDirection.None)
         {
             var randomInt = Random.Range(0, 3);
-            combatTextDirection = (CombatTextDirection)randomInt;
+            instantiateDirection = (InstantiateDirection)randomInt;
 
-            switch (combatTextDirection)
+            switch (instantiateDirection)
             {
-                case CombatTextDirection.UpperCentre:
+                case InstantiateDirection.UpperCentre:
                     direction = Vector2.up;
                     break;
-                case CombatTextDirection.UpperLeft:
+                case InstantiateDirection.UpperLeft:
                     direction = (Vector2.left / 2) + Vector2.up;
                     break;
-                case CombatTextDirection.UpperRight:
+                case InstantiateDirection.UpperRight:
                     direction = (Vector2.right / 2) + Vector2.up;
                     break;
             }
@@ -49,7 +49,7 @@ public class CombatText : MonoBehaviour {
         transform.Translate(direction * translation);
     }
 
-    public void Initialise( CombatTextType combatTextType)
+    public void Initialise(CombatTextType combatTextType)
     {
         this.combatTextType = combatTextType;
 

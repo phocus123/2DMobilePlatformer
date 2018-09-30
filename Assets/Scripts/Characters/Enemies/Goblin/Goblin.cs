@@ -23,7 +23,6 @@ namespace PHOCUS.Character
                 if (isAlive && characterDies)
                 {
                     RemoveCollisions();
-
                     isAlive = false;
                     OnEnemyDeath(this);
                     anim.SetTrigger("Death");
@@ -32,22 +31,6 @@ namespace PHOCUS.Character
                     Destroy(gameObject, animLength);
                 }
             }
-        }
-
-        void RemoveCollisions()
-        {
-            BoxCollider2D[] colliders = GetComponents<BoxCollider2D>();
-            GetComponent<Rigidbody2D>().gravityScale = 0;
-            foreach (BoxCollider2D col in colliders)
-            {
-                col.enabled = false;
-            }
-        }
-
-        void DropLoot()
-        {
-            var gem = Instantiate(GemPrefab, transform.position, Quaternion.identity);
-            gem.GetComponent<Gem>().Gems = Gems;
         }
     }
 }

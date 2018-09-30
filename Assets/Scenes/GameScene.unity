@@ -3878,6 +3878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isReadyToSpawn: 0
   CountdownTime: 2
+  TimeBetweenSpawn: 2
   SpawnPoint: {fileID: 952891551}
   Portal: {fileID: 1123211995}
   shopkeeperPrefab: {fileID: 1490798955031930, guid: b8df9c2b4a7adcc4ab259d83a8c3e285,
@@ -3885,10 +3886,6 @@ MonoBehaviour:
   Platforms: []
   SpawnPatterns:
   - SpawnGroup:
-    - {fileID: 1152621052355574, guid: 52891f61cfeee5f4c868367b4bb38a6b, type: 2}
-    - {fileID: 1152621052355574, guid: 52891f61cfeee5f4c868367b4bb38a6b, type: 2}
-    - {fileID: 1152621052355574, guid: 52891f61cfeee5f4c868367b4bb38a6b, type: 2}
-    - {fileID: 1152621052355574, guid: 52891f61cfeee5f4c868367b4bb38a6b, type: 2}
     - {fileID: 1152621052355574, guid: 52891f61cfeee5f4c868367b4bb38a6b, type: 2}
 --- !u!1001 &335349819
 Prefab:
@@ -14718,70 +14715,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 212890990644225448, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61792645804632194, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61792645804632194, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61792645804632194, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 61792645804632194, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61792645804632194, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114370872578832772, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: MaxHealth
-      value: 10000
-      objectReference: {fileID: 0}
     - target: {fileID: 114370872578832772, guid: b2cba7dda0782c040b69005c5b5a379a,
         type: 2}
       propertyPath: MaxStamina
       value: 100
       objectReference: {fileID: 0}
-    - target: {fileID: 114370872578832772, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: StaminaRegenAmount
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 114438984195841730, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: AttackStaminaCost
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114438984195841730, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: JumpStaminaCost
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114438984195841730, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: JumpForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114438984195841730, guid: b2cba7dda0782c040b69005c5b5a379a,
-        type: 2}
-      propertyPath: DoubleJumpForce
-      value: 8.5
+    - target: {fileID: 1551591606278228, guid: b2cba7dda0782c040b69005c5b5a379a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2cba7dda0782c040b69005c5b5a379a, type: 2}
@@ -25978,6 +25919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isReadyToSpawn: 0
   CountdownTime: 5
+  TimeBetweenSpawn: 2
   SpawnPoint: {fileID: 1399211894}
   Portal: {fileID: 1769255716}
   shopkeeperPrefab: {fileID: 1490798955031930, guid: b8df9c2b4a7adcc4ab259d83a8c3e285,

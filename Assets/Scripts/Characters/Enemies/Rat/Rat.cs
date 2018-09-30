@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using PHOCUS.UI;
 using UnityEngine;
-using PHOCUS.UI;
 
 namespace PHOCUS.Character
 {
@@ -25,7 +23,6 @@ namespace PHOCUS.Character
                 if (isAlive && characterDies)
                 {
                     RemoveCollisions();
-
                     isAlive = false;
                     OnEnemyDeath(this);
                     anim.SetTrigger("Death");
@@ -35,22 +32,5 @@ namespace PHOCUS.Character
                 }
             }
         }
-        //TODO does this actually work?
-        void RemoveCollisions()
-        {
-            BoxCollider2D[] colliders = GetComponents<BoxCollider2D>();
-            GetComponent<Rigidbody2D>().gravityScale = 0;
-            foreach (BoxCollider2D col in colliders)
-            {
-                col.enabled = false;
-            }
-        }
-
-        void DropLoot()
-        {
-            var gem = Instantiate(GemPrefab, transform.position, Quaternion.identity);
-            gem.GetComponent<Gem>().Gems = Gems;
-        }
-
     }
 }

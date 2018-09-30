@@ -217,8 +217,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+  MaxStamina: 100
+  StaminaRegenAmount: 8
   Damage: 10
   gems: 0
+  health: 0
+  stamina: 0
 --- !u!114 &114438984195841730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,12 +235,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 5
-  JumpForce: 9
+  DashSpeed: 30
+  DashLength: 0.15
+  JumpForce: 5
+  DoubleJumpForce: 8.5
   AttackSpeed: 0.6
-  HorizontalValue: 0
+  AttackStaminaCost: 15
+  JumpStaminaCost: 5
+  DashStaminaCost: 15
   isAttacking: 0
   isGrounded: 0
-  ActionsDisabled: 0
+  isDisabled: 0
+  isSliding: 0
+  CanDoubleJump: 0
+  CanDashInAir: 0
 --- !u!114 &114869693580515492
 MonoBehaviour:
   m_ObjectHideFlags: 1

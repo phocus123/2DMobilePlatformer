@@ -6,26 +6,34 @@ namespace PHOCUS.Character
 {
     public class PlayerController : MonoBehaviour
     {
-        public float MovementSpeed = 3f;
-        public float JumpForce = 5f;
-        public float DoubleJumpForce = 2.5f;
-        public float AttackSpeed = 1.5f;
-        public float AttackStaminaCost = 7f;
-        public float JumpStaminaCost = 2f;
+        [Header("Stats")]
+        public float MovementSpeed;
+        public float DashSpeed;
+        public float DashLength;
+        public float JumpForce;
+        public float DoubleJumpForce;
+        public float AttackSpeed;
+        public float AttackStaminaCost;
+        public float JumpStaminaCost;
+        public float DashStaminaCost;
+        [Header("States")]
         public bool isAttacking;
         public bool isGrounded;
-        public bool ActionsDisabled;
+        public bool isDisabled;
+        public bool isSliding;
         public bool CanDoubleJump;
+        public bool CanDashInAir;
 
         Rigidbody2D rigidBody;
         PlayerAnimator playerAnim;
-        SpriteRenderer sprite;
         Player player;
 
         bool resetJump;
         int attackIndex = 1;
         float lastHitTime;
         float horizontalValue;
+        LayerMask playerLayer = 14;
+        LayerMask invincibleLayer = 17;
 
         const float GROUNDED_RAY_DISTANCE = 1.5f;
         const int GROUND_LAYER = 8;
@@ -33,14 +41,13 @@ namespace PHOCUS.Character
         void Start()
         {
             rigidBody = GetComponentInChildren<Rigidbody2D>();
-            sprite = GetComponentInChildren<SpriteRenderer>();
             playerAnim = GetComponent<PlayerAnimator>();
             player = GetComponent<Player>();
         }
 
         void Update()
         {
-            if (!ActionsDisabled)
+            if (!isDisabled)
             {
                 HandleAttack();
                 HandleMovement();
@@ -69,7 +76,7 @@ namespace PHOCUS.Character
                 {
                     rigidBody.velocity = new Vector2(rigidBody.velocity.x, JumpForce);
                     playerAnim.Jump(true);
-                    StartCoroutine(ResetJumproutine());
+                    StartCoroutine(ResetJump());
                     player.Stamina -= JumpStaminaCost;
                     CanDoubleJump = true;
                 }
@@ -79,23 +86,53 @@ namespace PHOCUS.Character
                     {
                         playerAnim.DoubleJump(true);
                         CanDoubleJump = false;
+                        CanDashInAir = true;
                         rigidBody.velocity = new Vector2(rigidBody.velocity.x, DoubleJumpForce);
-                        playerAnim.Jump(true);
-                        StartCoroutine(ResetJumproutine());
+                        StartCoroutine(ResetJump());
                         player.Stamina -= JumpStaminaCost;
                     }
                 }
             }
 
-                if (!isGrounded && Input.GetMouseButtonDown(0) && CheckStamina(AttackStaminaCost))
+            if (!isGrounded && Input.GetMouseButtonDown(0) && CheckStamina(AttackStaminaCost))
             {
                 playerAnim.AirAttack();
                 player.Stamina -= AttackStaminaCost;
             }
 
-            rigidBody.velocity = new Vector2((horizontalValue * MovementSpeed), rigidBody.velocity.y);
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (!isSliding && CheckStamina(DashStaminaCost))
+                {
+                    if (isGrounded || CanDashInAir)
+                    {
+                        isSliding = true;
+                        StartCoroutine(Dash());
+                    }
+                }
+            }
 
+            rigidBody.velocity = new Vector2((horizontalValue * MovementSpeed), rigidBody.velocity.y);
             playerAnim.Move(horizontalValue);
+        }
+
+        IEnumerator Dash()
+        {
+            gameObject.layer = invincibleLayer;
+            float dashTime = DashLength;
+            playerAnim.Slide(true);
+            player.Stamina -= DashStaminaCost;
+
+            while (dashTime >= 0)
+            {
+                dashTime -= Time.deltaTime;
+                rigidBody.velocity = new Vector2(horizontalValue * DashSpeed, rigidBody.velocity.y);
+                yield return null;
+            }
+        
+            isSliding = false;
+            playerAnim.Slide(false);
+            gameObject.layer = playerLayer;
         }
 
         void HandleAttack()
@@ -131,6 +168,7 @@ namespace PHOCUS.Character
                 {
                     playerAnim.Jump(false);
                     playerAnim.DoubleJump(false);
+                    CanDashInAir = false;
                     return true;
                 }
             }
@@ -138,7 +176,7 @@ namespace PHOCUS.Character
             return false;
         }
 
-        IEnumerator ResetJumproutine()
+        IEnumerator ResetJump()
         {
             resetJump = true;
             yield return new WaitForSeconds(.1f);

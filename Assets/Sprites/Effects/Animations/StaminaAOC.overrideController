@@ -1,0 +1,12 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: StaminaAOC
+  m_Controller: {fileID: 9100000, guid: 88dd9ba0c5eda694f903ab5a9e37ced7, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 7082d4121ab63aa4bbc70795e3a0f726, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4cb879099a09eb24fa1eab771adedc01, type: 2}

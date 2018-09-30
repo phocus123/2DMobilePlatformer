@@ -10,14 +10,12 @@ namespace PHOCUS.Character
         public Canvas worldSpaceCanvas;
         public GameObject InteractPrefab;
 
-        Player player;
         bool inTrigger;
 
         void Awake()
         {
             shop = FindObjectOfType<Shop>(); //TODO Get from GameManager singleton when it is created.
             worldSpaceCanvas = GameObject.FindGameObjectWithTag("WorldSpaceCanvas").GetComponent<Canvas>(); //TODO Get from GameManager singleton when it is created.
-            player = FindObjectOfType<Player>();  //TODO Get from GameManager singleton when it is created.
         }
 
         void Update()

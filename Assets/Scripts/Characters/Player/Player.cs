@@ -10,14 +10,38 @@ namespace PHOCUS.Character
         public float MaxStamina;
         public float StaminaRegenAmount = 0.5f;
         public int Damage;
+
         [SerializeField] int gems;
+        [SerializeField] float health;
+        [SerializeField] float stamina;
 
         PlayerAnimator anim;
         PlayerController playerController;
         bool canDamage = true;
 
-        public float Health { get; set; }
-        public float Stamina { get; set; }
+        public bool IsAlive { get { return Health > 0; } }
+
+        public float Health
+        {
+            get { return health; }
+            set
+            {
+                health = value;
+                health = Mathf.Clamp(health, 0 , MaxHealth);
+                UIManager.Instance.UpdatePlayerHealth(health, MaxHealth);
+            }
+        }
+
+        public float Stamina
+        {
+            get { return stamina; }
+            set
+            {
+                stamina = value;
+                stamina = Mathf.Clamp(stamina, 0, MaxStamina);
+                UIManager.Instance.UpdateStamina(stamina, MaxStamina);
+            }
+        }
 
         public int Gems
         {
@@ -71,7 +95,7 @@ namespace PHOCUS.Character
 
         public void TogglePlayerActions()
         {
-            playerController.ActionsDisabled = !playerController.ActionsDisabled;
+            playerController.isDisabled = !playerController.isDisabled;
             playerController.StopMoving();
         }
 

@@ -64,6 +64,11 @@ namespace PHOCUS.Character
             anim.SetTrigger("AirAttack");
         }
 
+        public void Slide(bool slide)
+        {
+            anim.SetBool("Slide", slide);
+        }
+
         public void Hit()
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack01") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack02") || anim.GetCurrentAnimatorStateInfo(0).IsName("Attack03"))

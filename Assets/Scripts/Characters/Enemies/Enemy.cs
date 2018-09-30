@@ -8,6 +8,10 @@ namespace PHOCUS.Character
 {
     public class Enemy : MonoBehaviour
     {
+        public GameObject GemPrefab;
+        public GameObject healthPrefab;
+        public GameObject staminaPrefab;
+        [Header("Stats")]
         public int Gems;
         public float MoveSpeed;
         public float AttackSpeed;
@@ -15,7 +19,7 @@ namespace PHOCUS.Character
         public int Damage;
         public float maxHealth;
         public Image HealthBar;
-        public GameObject GemPrefab;
+        [Header("States")]
         public bool isAttacking;
         public bool isAlive = true;
 
@@ -23,7 +27,7 @@ namespace PHOCUS.Character
         protected bool canDamage = true;
 
         SpriteRenderer sprite;
-        PlayerController player;
+        Player player;
         Vector3 currentTarget;
 
         public enum EnemyState { Attack, Follow, Wait }
@@ -32,6 +36,8 @@ namespace PHOCUS.Character
         float distanceToPlayer;
         float lastHitTime;
         bool inAttackRange;
+        const float healthPotDropRate = 0.2f;
+        const float stamPotDropRate = 0.6f;
 
         public float Health { get; set; }
         public Action<Enemy> OnEnemyDeath = delegate { };
@@ -40,16 +46,21 @@ namespace PHOCUS.Character
         {
             sprite = GetComponentInChildren<SpriteRenderer>();
             anim = GetComponentInChildren<Animator>();
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
             Health = maxHealth;
         }
 
         void Update()
         {
-            GetRanges();
-            QueryStates();
-            HandleFlipX();
+            if (player.IsAlive)
+            {
+                GetRanges();
+                QueryStates();
+                HandleFlipX();
+            }
+            else
+                StopAllCoroutines();
         }
 
         protected IEnumerator ChasePlayer()
@@ -85,6 +96,28 @@ namespace PHOCUS.Character
             canDamage = true;
         }
 
+        protected void DropLoot()
+        {
+            var gem = Instantiate(GemPrefab, transform.position, Quaternion.identity);
+            gem.GetComponentInChildren<Gem>().Gems = Gems;
+
+            int randomValue = UnityEngine.Random.Range(0, 100);
+
+            if (randomValue <= (healthPotDropRate * 100))
+                Instantiate(healthPrefab, transform.position, Quaternion.identity);
+            if (randomValue <= (stamPotDropRate * 100) && randomValue > (healthPotDropRate * 100))
+                Instantiate(staminaPrefab, transform.position, Quaternion.identity);
+        }
+
+        protected void RemoveCollisions()
+        {
+            BoxCollider2D[] colliders = GetComponents<BoxCollider2D>();
+            GetComponent<Rigidbody2D>().gravityScale = 0;
+
+            foreach (BoxCollider2D col in colliders)
+                col.enabled = false;
+        }
+
         void GetRanges()
         {
             distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
@@ -92,7 +125,6 @@ namespace PHOCUS.Character
             anim.SetFloat("Horizontal", direction.normalized.x);
             inAttackRange = distanceToPlayer <= AttackRange;
         }
-
 
         void QueryStates()
         {

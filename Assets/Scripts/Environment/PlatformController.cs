@@ -16,6 +16,7 @@ namespace PHOCUS.Environment
     {
         [HideInInspector] public bool isReadyToSpawn;
         public float CountdownTime = 10f;
+        public float TimeBetweenSpawn = 2f;
         public Transform SpawnPoint;
         public Portal Portal;
         public GameObject shopkeeperPrefab;
@@ -95,7 +96,7 @@ namespace PHOCUS.Environment
                 enemy.OnEnemyDeath += UpdateEnemy;
                 hasSpawned = true;
                 CheckFinalEnemy();
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(TimeBetweenSpawn);
             }
         }
 
