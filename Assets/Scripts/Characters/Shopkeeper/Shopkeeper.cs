@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using PHOCUS.UI;
+﻿using PHOCUS.UI;
+using UnityEngine;
 using PHOCUS.Utilities;
 
 namespace PHOCUS.Character
@@ -9,6 +9,7 @@ namespace PHOCUS.Character
         public Shop shop;
         public Canvas worldSpaceCanvas;
         public GameObject InteractPrefab;
+        public InteractableRaycaster ray;
 
         bool inTrigger;
 
@@ -16,25 +17,16 @@ namespace PHOCUS.Character
         {
             shop = FindObjectOfType<Shop>(); //TODO Get from GameManager singleton when it is created.
             worldSpaceCanvas = GameObject.FindGameObjectWithTag("WorldSpaceCanvas").GetComponent<Canvas>(); //TODO Get from GameManager singleton when it is created.
+            ray = FindObjectOfType<InteractableRaycaster>(); //TODO Get from GameManager singleton when it is created.
+
+            ray.OnInteractableClicked += OnClicked;
         }
 
-        void Update()
+        void OnClicked()
         {
             if (!shop.isEnabled)
                 if (inTrigger)
-                {
-                    LayerMask interactableLayer = 1 << 15;
-                    float zPlane = 0f;
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Vector3 posAtZ = ray.origin + ray.direction * (zPlane - ray.origin.z) / ray.direction.z;
-                    Vector2 point = new Vector2(posAtZ.x, posAtZ.y);
-                    RaycastHit2D hit = Physics2D.Raycast(point, Vector2.zero, Mathf.Infinity, interactableLayer);
-
-                    if (hit.collider != null && Input.GetMouseButtonDown(0))
-                    {
-                        shop.ToggleShop();
-                    }
-                }
+                    shop.ToggleShop();
         }
 
         void OnTriggerEnter2D(Collider2D collision)
@@ -45,6 +37,11 @@ namespace PHOCUS.Character
             {
                 Instantiate(InteractPrefab, transform.position, Quaternion.identity, worldSpaceCanvas.transform);
             }
+        }
+
+        void OnTriggerStay2D(Collider2D collision)
+        {
+            inTrigger = true;
         }
 
         void OnTriggerExit2D(Collider2D collision)

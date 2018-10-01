@@ -390,7 +390,7 @@ MonoBehaviour:
     type: 2}
   staminaPrefab: {fileID: 1256403201903336, guid: 828204daa627f504a9402d4a1f4d35fe,
     type: 2}
-  Gems: 4
+  Gems: 25
   MoveSpeed: 3
   AttackSpeed: 1.2
   AttackRange: 0.88

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace PHOCUS.Environment
@@ -7,19 +8,8 @@ namespace PHOCUS.Environment
     {
         public Tilemap tilemap;
 
-        const float enabledAlpha = 255;
-        const float disabledAlpha = 80;
-
-        Color tmp;
-        bool isEnabled;
-        Color colourOne = new Color(255, 255, 255, 255);
-        Color colourTwo = new Color(255, 255, 255, 80);
-
-        void OnValidate()
-        {
-            if (tilemap == null)
-                tilemap = GetComponent<Tilemap>();
-        }
+        Color tmp = Color.white;
+        float disabledAlpha = 0.2f;
 
         void Awake()
         {
@@ -29,13 +19,9 @@ namespace PHOCUS.Environment
 
         public void ToggleAlpha()
         {
-            isEnabled = !isEnabled;
-
-            if (isEnabled)
-                tilemap.color = colourOne;
-            else
-                tilemap.color = colourTwo;
-
+            tmp.a = disabledAlpha;
+          
+            tilemap.color = tilemap.color == Color.white ? tmp : Color.white;
         }
     }
 }

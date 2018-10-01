@@ -4,15 +4,11 @@ namespace PHOCUS.Environment
 {
     public class PathController : MonoBehaviour
     {
-        public int GemCost;
         public Path[] Paths;
+        public Transform CameraLookAt;
         public PathDecorations pathDecorations;
-
-        void OnValidate()
-        {
-            if (pathDecorations == null)
-                pathDecorations = GetComponentInChildren<PathDecorations>();
-        }
+        public int GemCost;
+        public bool PathsEnabled;
 
         void Start()
         {
@@ -27,6 +23,7 @@ namespace PHOCUS.Environment
                 path.IsEnabled = !path.IsEnabled;
             }
 
+            PathsEnabled = !PathsEnabled;
             pathDecorations.ToggleAlpha();
         }
     }

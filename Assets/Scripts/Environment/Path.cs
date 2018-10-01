@@ -2,6 +2,12 @@
 
 namespace PHOCUS.Environment
 {
+    public enum PathState
+    {
+        Enabled,
+        Disabled
+    }
+
     public class Path : MonoBehaviour
     {
         public SpriteRenderer enabledSprite;
@@ -10,7 +16,6 @@ namespace PHOCUS.Environment
         public bool IsEnabled;
         public PathState State;
 
-        public enum PathState { Enabled, Disabled }
         const float enabledAlpha = 255f;
         const float disabledAlpha = 80f;
 

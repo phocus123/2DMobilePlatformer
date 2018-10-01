@@ -9,6 +9,7 @@ namespace PHOCUS.UI
     public class Shop : MonoBehaviour
     {
         public GameObject ShopItemPrefab;
+        public Camera PathCamera;
         public ShopItem[] Items;
         public Button BuyButton;
         public Button ExitButton;
@@ -18,6 +19,7 @@ namespace PHOCUS.UI
 
         ShopItem selectedItem;
         Player player; 
+
 
         void Awake()
         {
@@ -30,12 +32,16 @@ namespace PHOCUS.UI
             {
                 item.OnItemClicked += SelectItem;
             }
-
-            SelectItem(Items[0]);
         }
 
         public void ToggleShop()
         {
+            if (selectedItem != null)
+            {
+                selectedItem.DeselectItem();
+                selectedItem = null;
+            }
+
             player.TogglePlayerActions();
             UpdateGemsText();
             ShopCanvas.Toggle();
@@ -48,12 +54,14 @@ namespace PHOCUS.UI
             {
                 selectedItem = item;
                 item.SelectItem();
+                SetCamera();
             }
             else
             {
                 selectedItem.DeselectItem();
                 selectedItem = item;
                 item.SelectItem();
+                SetCamera();
             }
         }
 
@@ -64,6 +72,9 @@ namespace PHOCUS.UI
 
         void BuyItem()
         {
+            if (selectedItem == null)
+                return;
+
             bool canAfford = selectedItem.GemCost <= player.Gems;
 
             if (canAfford && !selectedItem.HasBeenPurchased)
@@ -76,6 +87,11 @@ namespace PHOCUS.UI
             {
                 UIManager.Instance.SetAlertText("You do not have enough gems!");
             }
+        }
+
+        void SetCamera()
+        {
+            PathCamera.transform.localPosition = selectedItem.PathController.CameraLookAt.transform.localPosition;
         }
     }
 }
