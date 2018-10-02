@@ -156,6 +156,7 @@ MonoBehaviour:
   worldSpaceCanvas: {fileID: 0}
   InteractPrefab: {fileID: 1136249829178148, guid: 75771e699a3c3914cbb0ef794e4ddf10,
     type: 2}
+  dialogue: {fileID: 0}
 --- !u!212 &212692413186728306
 SpriteRenderer:
   m_ObjectHideFlags: 1

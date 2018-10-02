@@ -15,7 +15,7 @@ namespace PHOCUS.Environment
     public class PlatformController : MonoBehaviour
     {
         [HideInInspector] public bool isReadyToSpawn;
-        public float CountdownTime = 10f;
+        public float CountdownTime;
         public float TimeBetweenSpawn = 2f;
         public Transform SpawnPoint;
         public Portal Portal;
@@ -25,22 +25,37 @@ namespace PHOCUS.Environment
         [Header("Enemy Spawn Pattern")]
         public SpawnPattern[] SpawnPatterns;
 
+        Dialogue dialogue;
         List<Enemy> enemiesSpawned = new List<Enemy>();
         bool hasSpawned;
         bool isFinalEnemy;
         int spawnPatterIndex = 0;
         int spawnGroupIndex = 0;
 
-        void Start()
+        void Awake()
         {
             Platforms = GetComponentsInChildren<Platform>();
             Portal = GetComponentInChildren<Portal>();
+            dialogue = UIManager.Instance.Dialogue;
+        }
+
+        void Start()
+        {
+            dialogue.OnResetPlatform += ResetPlatform;    
         }
 
         void Update()
         {
             HandleEnemies();
             CheckFinalEnemy();
+        }
+
+        public void ResetPlatform()
+        {
+            Platforms[0].Reset();
+
+            hasSpawned = false;
+            spawnPatterIndex = 0;
         }
 
         void HandleEnemies()

@@ -17,9 +17,12 @@ namespace PHOCUS.UI
         public Image PlayerStamina;
         public TextMeshProUGUI GemText;
         [Header("Combat Text")]
-        [SerializeField] GameObject combatTextPrefab;
-        [SerializeField] Canvas combatTextCanvas;
-        [SerializeField] float speed;
+        public GameObject CombatTextPrefab;
+        public float Speed;
+        [Header("UI References")]
+        public Shop Shop;
+        public Dialogue Dialogue;
+        public Canvas WorldSpaceCanvas;
 
         bool alertActive;
 
@@ -74,7 +77,7 @@ namespace PHOCUS.UI
 
         public void TriggerCombatText(Vector2 position, float healthValue, CombatTextType combatTextType)
         {
-            GameObject combatText = Instantiate(combatTextPrefab, position, Quaternion.identity, combatTextCanvas.transform);
+            GameObject combatText = Instantiate(CombatTextPrefab, position, Quaternion.identity, WorldSpaceCanvas.transform);
             combatText.GetComponent<CombatText>().Initialise(combatTextType);
             combatText.GetComponent<TextMeshProUGUI>().text = healthValue.ToString();
         }

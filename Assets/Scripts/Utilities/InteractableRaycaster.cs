@@ -6,6 +6,22 @@ namespace PHOCUS.Utilities
     public class InteractableRaycaster : MonoBehaviour
     {
         public Action OnInteractableClicked = delegate { };
+        public Action<bool> OnMouseOverInteractable = delegate { };
+
+        bool mouseOverInteractable;
+
+        public bool MouseOverInteractable
+        {
+            get { return mouseOverInteractable; }
+            set
+            {
+                if (mouseOverInteractable == value)
+                    return;
+
+                mouseOverInteractable = value;
+                OnMouseOverInteractable(mouseOverInteractable);
+            }
+        }
 
         void Update()
         {
@@ -16,10 +32,15 @@ namespace PHOCUS.Utilities
             Vector2 point = new Vector2(posAtZ.x, posAtZ.y);
             RaycastHit2D hit = Physics2D.Raycast(point, Vector2.zero, Mathf.Infinity, interactableLayer);
 
-            if (hit.collider != null && Input.GetMouseButtonDown(0))
+            if (hit.collider != null)
             {
-                OnInteractableClicked();
+                MouseOverInteractable = true;
+
+                if (Input.GetMouseButtonDown(0))
+                    OnInteractableClicked();
             }
+            else
+                MouseOverInteractable = false;
         }
     }
 }

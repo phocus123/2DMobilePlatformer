@@ -80,6 +80,8 @@
     <Compile Include="Assets\Scripts\Environment\PlatformController.cs" />
     <Compile Include="Assets\Scripts\Environment\Portal.cs" />
     <Compile Include="Assets\Scripts\UI\CombatText.cs" />
+    <Compile Include="Assets\Scripts\UI\Dialogue.cs" />
+    <Compile Include="Assets\Scripts\UI\DialogueButton.cs" />
     <Compile Include="Assets\Scripts\UI\InteractableText.cs" />
     <Compile Include="Assets\Scripts\UI\Shop.cs" />
     <Compile Include="Assets\Scripts\UI\ShopItem.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Assets\Scripts\Utilities\BackgroundFollow.cs" />
     <Compile Include="Assets\Scripts\Utilities\BackgroundScroller.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
+    <Compile Include="Assets\Scripts\Utilities\GameManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\InteractableRaycaster.cs" />
     <Compile Include="Assets\Scripts\Utilities\Singleton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />

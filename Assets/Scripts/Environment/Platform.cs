@@ -15,6 +15,11 @@ namespace PHOCUS.Environment
             parent = GetComponentInParent<PlatformController>();
         }
 
+        public void Reset()
+        {
+            StartCoroutine(SpawnCountdown());
+        }
+
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (!IsTriggered)
@@ -30,19 +35,22 @@ namespace PHOCUS.Environment
 
         IEnumerator SpawnCountdown()
         {
-            float timer = 0f;
-
-            while (timer < parent.CountdownTime)
+            if (IsTriggered)
             {
-                timer += Time.deltaTime;
-                float timeRemaining = parent.CountdownTime - timer;
-                string time = string.Format("Enemies spawning in {0} seconds", Mathf.Round(timeRemaining));
-                UIManager.Instance.SetAlertText(time);
-                yield return null;
-            }
+                float timer = 0f;
 
-            UIManager.Instance.SetAlertText(string.Empty);
-            parent.isReadyToSpawn = true;
+                while (timer < parent.CountdownTime)
+                {
+                    timer += Time.deltaTime;
+                    float timeRemaining = parent.CountdownTime - timer;
+                    string time = string.Format("Enemies spawning in {0} seconds", Mathf.Round(timeRemaining));
+                    UIManager.Instance.SetAlertText(time);
+                    yield return null;
+                }
+
+                UIManager.Instance.SetAlertText(string.Empty);
+                parent.isReadyToSpawn = true;
+            }
         }
     }
 }
