@@ -3,35 +3,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using PHOCUS.Utilities;
+using PHOCUS.Environment;
+using System.Collections.Generic;
 
 namespace PHOCUS.UI
 {
     public class Shop : MonoBehaviour
     {
+        public PlatformController Platform;
         public GameObject ShopItemPrefab;
+        public Transform ShopItemParent;
         public Camera PathCamera;
-        public ShopItem[] Items;
+        public List<ShopItem> Items;
         public Button BuyButton;
         public Button ExitButton;
         public TextMeshProUGUI GemText;
         public CanvasGroup ShopCanvas;
-        public bool isEnabled;
+        public bool IsEnabled;
 
         ShopItem selectedItem;
-        Player player; 
-
+        Player player;
+        bool pathsLoaded;
 
         void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
             ShopCanvas = GetComponent<CanvasGroup>();
+
             ExitButton.onClick.AddListener(ToggleShop);
             BuyButton.onClick.AddListener(BuyItem);
-
-            foreach (var item in Items)
-            {
-                item.OnItemClicked += SelectItem;
-            }
         }
 
         public void ToggleShop()
@@ -42,10 +42,35 @@ namespace PHOCUS.UI
                 selectedItem = null;
             }
 
-            player.TogglePlayerActions();
+            if (!pathsLoaded)
+                LoadPaths();
+
             UpdateGemsText();
             ShopCanvas.Toggle();
-            isEnabled = !isEnabled;
+            IsEnabled = !IsEnabled;
+            player.TogglePlayerActions();
+        }
+
+        void LoadPaths()
+        {
+            pathsLoaded = true;
+
+            foreach (PathController path in Platform.Paths)
+            {
+                var go = Instantiate(ShopItemPrefab, ShopItemParent);
+                var item = go.GetComponent<ShopItem>();
+                Items.Add(item);
+
+                item.ItemNameText.text = path.name.ToString();
+                item.ItemCostText.text = path.GemCost.ToString() + "G";
+                item.GemCost = path.GemCost;
+                item.PathController = path;
+            }
+
+            foreach (var item in Items)
+            {
+                item.OnItemClicked += SelectItem;
+            }
         }
 
         void SelectItem(ShopItem item)
@@ -85,7 +110,7 @@ namespace PHOCUS.UI
             }
             else if (!canAfford && !selectedItem.HasBeenPurchased)
             {
-                UIManager.Instance.SetAlertText("You do not have enough gems!");
+                UIManager.Instance.SetAndFadeAlertText("You do not have enough gems!");
             }
         }
 

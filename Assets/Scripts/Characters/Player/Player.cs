@@ -9,17 +9,44 @@ namespace PHOCUS.Character
         public float MaxHealth;
         public float MaxStamina;
         public float StaminaRegenAmount = 0.5f;
-        public int Damage;
+        [SerializeField] int attack01Damage;
+        [SerializeField] int attack02Damage;
+        [SerializeField] int attack03Damage;
 
         [SerializeField] int gems;
         [SerializeField] float health;
         [SerializeField] float stamina;
 
-        PlayerAnimator anim;
-        PlayerController playerController;
+        PlayerAnimation anim;
+        PlayerMovement playerMovement;
+        PlayerAttack playerAttack;
         bool canDamage = true;
+        int damage;
 
         public bool IsAlive { get { return Health > 0; } }
+
+        public int Damage
+        {
+            get
+            {
+                switch (playerAttack.AttackIndex)
+                {
+                    case 1:
+                        damage = attack01Damage;
+                        break;
+                    case 2:
+                        damage = attack02Damage;
+                        break;
+                    case 3:
+                        damage = attack03Damage;
+                        break;
+                    default:
+                        damage = attack01Damage;
+                        break;
+                }
+                return damage;
+            }
+        }
 
         public float Health
         {
@@ -53,10 +80,11 @@ namespace PHOCUS.Character
             }
         }
 
-        void Start()
+        void Awake()
         {
-            anim = GetComponent<PlayerAnimator>();
-            playerController = GetComponent<PlayerController>();
+            anim = GetComponent<PlayerAnimation>();
+            playerMovement = GetComponent<PlayerMovement>();
+            playerAttack = GetComponent<PlayerAttack>();
             Health = MaxHealth;
             Stamina = MaxStamina;
             UIManager.Instance.UpdateGemCount(gems);
@@ -88,6 +116,20 @@ namespace PHOCUS.Character
             }
         }
 
+        public bool CheckStamina(float amount)
+        {
+            bool temp = amount < Stamina;
+
+            if (temp)
+                return temp;
+            else
+            {
+                UIManager.Instance.SetAndFadeAlertText("You do not have enough stamina");
+                return temp;
+            }
+        }
+
+
         public void AddGems(int amount)
         {
             Gems += amount;
@@ -95,8 +137,9 @@ namespace PHOCUS.Character
 
         public void TogglePlayerActions()
         {
-            playerController.isDisabled = !playerController.isDisabled;
-            playerController.StopMoving();
+            playerMovement.IsDisabled = !playerMovement.IsDisabled;
+            playerAttack.IsDisabled = !playerAttack.IsDisabled;
+            playerMovement.StopMoving();
         }
 
         bool isKillingBlow(float damage)

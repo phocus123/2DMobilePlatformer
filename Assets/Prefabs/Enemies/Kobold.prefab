@@ -396,8 +396,8 @@ MonoBehaviour:
   Damage: 15
   maxHealth: 50
   HealthBar: {fileID: 114225987320440436}
-  isAttacking: 0
-  isAlive: 1
+  IsAttacking: 0
+  IsAlive: 1
   State: 0
 --- !u!212 &212121862127677168
 SpriteRenderer:

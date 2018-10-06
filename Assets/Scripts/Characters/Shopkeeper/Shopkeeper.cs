@@ -1,31 +1,46 @@
-﻿using PHOCUS.UI;
-using UnityEngine;
+﻿using UnityEngine;
+using PHOCUS.UI;
 using PHOCUS.Utilities;
+using PHOCUS.Environment;
+using System.Collections;
 
 namespace PHOCUS.Character
 {
     public class Shopkeeper : MonoBehaviour
     {
-        public Canvas worldSpaceCanvas;
-        public GameObject InteractPrefab;
-        public Dialogue dialogue;
+        public Dialogue Dialogue;
+        public PlatformController Platform;
+        public InteractableIndicator Indicator;
+        public bool IsVisible;
 
+        SpriteRenderer spriteRenderer;
+        BoxCollider2D boxCollider;
         bool inTrigger;
 
         void Awake()
         {
-            worldSpaceCanvas = UIManager.Instance.WorldSpaceCanvas;
-            dialogue = UIManager.Instance.Dialogue;
-            InteractableRaycaster ray = GameManager.Instance.interactableRaycaster;
+            Dialogue = UIManager.Instance.Dialogue;
+            Indicator = GetComponentInChildren<InteractableIndicator>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            boxCollider = GetComponent<BoxCollider2D>();
+            InteractableRaycaster ray = GameManager.Instance.InteractableRaycaster;
 
             ray.OnInteractableClicked += OnClicked;
-            dialogue.OnResetPlatform += DestroyShopkeeper;
+            Dialogue.OnResetPlatform += DestroyShopkeeper;
+        }
+
+        public void SpawnShopkeeper()
+        {
+            StartCoroutine(ToggleShopkeeper(true));
         }
 
         void OnClicked()
         {
             if (inTrigger)
-                dialogue.ToggleDialogue();
+            {
+                Dialogue.ToggleDialogue();
+                Dialogue.Shop.Platform = Platform;
+            }
         }
 
         void OnTriggerEnter2D(Collider2D collision)
@@ -34,24 +49,60 @@ namespace PHOCUS.Character
 
             if (collision.tag == "Player")
             {
-                Instantiate(InteractPrefab, transform.position, Quaternion.identity, worldSpaceCanvas.transform);
+                if (!IsVisible)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(ToggleShopkeeper(true));
+                }
             }
         }
 
         void OnTriggerStay2D(Collider2D collision)
         {
-            inTrigger = true;
+            if (collision.tag == "Player")
+                inTrigger = true;
         }
 
         void OnTriggerExit2D(Collider2D collision)
         {
-            inTrigger = false;
+            if (collision.tag == "Player")
+            {
+                inTrigger = false;
+
+                if (IsVisible)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(ToggleShopkeeper(false));
+                }
+
+                if (Dialogue.IsActive)
+                    Dialogue.ToggleDialogue();
+            }
         }
 
         void DestroyShopkeeper()
         {
-            Destroy(transform.gameObject);
-            dialogue.OnResetPlatform -= DestroyShopkeeper;
+            if (Platform.IsPlatformActive)
+            {
+                Destroy(transform.gameObject);
+                Dialogue.OnResetPlatform -= DestroyShopkeeper;
+            }
+        }
+
+        IEnumerator ToggleShopkeeper(bool isVisible) 
+        {
+            Platform.Portal.GetComponentInChildren<Animator>().SetBool("Animate", true);
+
+            yield return new WaitForSeconds(1f);
+
+            spriteRenderer.enabled = spriteRenderer.enabled ? false : true;
+            Platform.Portal.GetComponentInChildren<Animator>().SetBool("Animate", false);
+
+            if(!IsVisible)
+                Indicator.ToggleIndicator();
+
+            IsVisible = isVisible;
+            boxCollider.enabled = true;
         }
     }
 }

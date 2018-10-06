@@ -26,7 +26,7 @@ namespace PHOCUS.UI
 
         bool alertActive;
 
-        public void SetAlertText(string text)
+        public void SetAndFadeAlertText(string text)
         {
             AlertGroup.alpha = 1;
             AlertText.text = text;
@@ -35,7 +35,13 @@ namespace PHOCUS.UI
                 StartCoroutine(FadeAlertText());
         }
 
-        IEnumerator FadeAlertText()
+        public void SetAlertText(string text)
+        {
+            AlertGroup.alpha = 1;
+            AlertText.text = text;
+        }
+
+        IEnumerator FadeAlertText() // TODO we dont always want to fade, for instance with spawn countdown
         {
             alertActive = true;
             float progress = 1f;

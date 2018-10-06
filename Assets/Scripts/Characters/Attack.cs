@@ -13,12 +13,13 @@ namespace PHOCUS.Character
         {
             if (GetComponentInParent<Enemy>())
                 damage = GetComponentInParent<Enemy>().Damage;
-            if(GetComponentInParent<Player>())
-                damage = GetComponentInParent<Player>().Damage;
         }
 
         void OnTriggerEnter2D(Collider2D collision)
         {
+            if (GetComponentInParent<Player>())
+                damage = GetComponentInParent<Player>().Damage;
+
             var damageable = collision.GetComponent<IDamageable>();
 
             if (damageable is IDamageable)

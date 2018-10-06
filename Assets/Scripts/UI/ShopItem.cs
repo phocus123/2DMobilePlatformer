@@ -9,8 +9,8 @@ namespace PHOCUS.UI
 {
     public class ShopItem : MonoBehaviour, IPointerClickHandler
     {
-        public TextMeshProUGUI itemNameText;
-        public TextMeshProUGUI itemCostText;
+        public TextMeshProUGUI ItemNameText;
+        public TextMeshProUGUI ItemCostText;
         public PathController PathController;
         public int GemCost;
         public bool HasBeenPurchased;
@@ -20,25 +20,14 @@ namespace PHOCUS.UI
         Color defaultColor = Color.white;
         Color selectedColor = new Color(255, 232, 0, 1);
 
-
-        void OnValidate()
+        void Awake()
         {
             TextMeshProUGUI[] childTexts = GetComponentsInChildren<TextMeshProUGUI>();
 
-            if (itemNameText == null)
-                itemNameText = childTexts[0];
-            if (itemCostText == null)
-                itemCostText = childTexts[1];
-        }
-
-        void Start()
-        {
-            TextMeshProUGUI[] childTexts = GetComponentsInChildren<TextMeshProUGUI>();
-
-            if (itemNameText == null)
-                itemNameText = childTexts[0];
-            if (itemCostText == null)
-                itemCostText = childTexts[1];
+            if (ItemNameText == null)
+                ItemNameText = childTexts[0];
+            if (ItemCostText == null)
+                ItemCostText = childTexts[1];
 
             if (PathController != null)
                 GemCost = PathController.GemCost;
@@ -55,8 +44,8 @@ namespace PHOCUS.UI
         {
             if (!HasBeenPurchased)
             {
-                itemNameText.color = selectedColor;
-                itemCostText.color = selectedColor;
+                ItemNameText.color = selectedColor;
+                ItemCostText.color = selectedColor;
                 TogglePath();
             }
         }
@@ -65,16 +54,16 @@ namespace PHOCUS.UI
         {
             if (!HasBeenPurchased)
             {
-                itemNameText.color = defaultColor;
-                itemCostText.color = defaultColor;
+                ItemNameText.color = defaultColor;
+                ItemCostText.color = defaultColor;
                 TogglePath();
             }
         }
 
         public void BuyItem()
         {
-            itemNameText.text = "Purchased";
-            itemCostText.text = string.Empty;
+            ItemNameText.text = "Purchased";
+            ItemCostText.text = string.Empty;
             Button button = GetComponent<Button>();
             button.interactable = false;
             HasBeenPurchased = true;
@@ -90,8 +79,8 @@ namespace PHOCUS.UI
         {
             if (PathController != null)
             { 
-                itemNameText.text = PathController.gameObject.name;
-                itemCostText.text = GemCost.ToString() + "G";
+                ItemNameText.text = PathController.gameObject.name;
+                ItemCostText.text = GemCost.ToString() + "G";
             }
         }
     }

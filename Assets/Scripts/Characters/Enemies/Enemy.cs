@@ -20,8 +20,8 @@ namespace PHOCUS.Character
         public float maxHealth;
         public Image HealthBar;
         [Header("States")]
-        public bool isAttacking;
-        public bool isAlive = true;
+        public bool IsAttacking;
+        public bool IsAlive = true;
 
         protected Animator anim;
         protected bool canDamage = true;
@@ -33,11 +33,11 @@ namespace PHOCUS.Character
         public enum EnemyState { Attack, Follow, Wait }
         public EnemyState State;
 
-        float distanceToPlayer;
         float lastHitTime;
+        float distanceToPlayer;
         bool inAttackRange;
-        const float healthPotDropRate = 0.2f;
-        const float stamPotDropRate = 0.6f;
+        const float healthPotDropRate = 0.45f;
+        const float stamPotDropRate = 0.8f;
 
         public float Health { get; set; }
         public Action<Enemy> OnEnemyDeath = delegate { };
@@ -65,7 +65,7 @@ namespace PHOCUS.Character
 
         protected IEnumerator ChasePlayer()
         {
-            while (distanceToPlayer >= AttackRange && !isAttacking)
+            while (distanceToPlayer >= AttackRange && !IsAttacking)
             {
                 currentTarget = player.transform.position;
                 transform.position = Vector2.MoveTowards(transform.position, new Vector3(currentTarget.x, transform.position.y, 0), MoveSpeed * Time.deltaTime);
@@ -73,20 +73,20 @@ namespace PHOCUS.Character
             }
         }
 
-        protected IEnumerator AttackTarget()
+        protected virtual IEnumerator AttackTarget()
         {
+            IsAttacking = true;
             bool isTimeToHitAgain = Time.time - lastHitTime > AttackSpeed;
 
             if (isTimeToHitAgain)
             {
-                isAttacking = true;
                 anim.SetTrigger("Attack");
                 lastHitTime = Time.time;
             }
 
             yield return new WaitForSeconds(AttackSpeed);
-            isAttacking = false;
             State = EnemyState.Wait;
+            IsAttacking = false;
             anim.SetBool("Move", true);
         }
 
@@ -128,7 +128,7 @@ namespace PHOCUS.Character
 
         void QueryStates()
         {
-            if (canDamage && isAlive)
+            if (IsAlive)
             {
                 if (inAttackRange && State != EnemyState.Attack)
                     ExecuteAttackState();
@@ -149,17 +149,17 @@ namespace PHOCUS.Character
         {
             anim.SetBool("Move", false);
             State = EnemyState.Attack;
-            StopAllCoroutines();
+            StopCoroutine(ChasePlayer());
             StartCoroutine(AttackTarget());
         }
 
         void ExecuteFollowState()
         {
-            if (!isAttacking)
+            if (!IsAttacking)
             {
                 anim.SetBool("Move", true);
                 State = EnemyState.Follow;
-                StopAllCoroutines();
+                StopCoroutine(AttackTarget());
                 StartCoroutine(ChasePlayer());
             }
         }

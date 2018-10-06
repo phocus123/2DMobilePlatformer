@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 50782005984251606}
   - component: {fileID: 61865996133155314}
   - component: {fileID: 114370872578832772}
+  - component: {fileID: 114788062720791580}
   - component: {fileID: 114438984195841730}
   - component: {fileID: 114139692898897080}
   m_Layer: 14
@@ -85,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1551591606278228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.097, z: 0}
+  m_LocalPosition: {x: 0, y: 0.093, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4589511095796838}
@@ -220,7 +221,7 @@ MonoBehaviour:
   MaxStamina: 100
   StaminaRegenAmount: 8
   Damage: 10
-  gems: 0
+  gems: 100
   health: 0
   stamina: 0
 --- !u!114 &114438984195841730
@@ -249,6 +250,17 @@ MonoBehaviour:
   isSliding: 0
   CanDoubleJump: 0
   CanDashInAir: 0
+--- !u!114 &114788062720791580
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1551591606278228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f5a6b3cd167b1498656721489a6e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114869693580515492
 MonoBehaviour:
   m_ObjectHideFlags: 1

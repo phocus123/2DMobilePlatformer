@@ -7,22 +7,24 @@ namespace PHOCUS.UI
 {
     public class Dialogue : MonoBehaviour
     {
-        public DialogueButton[] DialogueButtons;
+        public Interactable[] Interactables;
         public TextMeshProUGUI mainText;
         public Button ResetButton;
         public Button ShopButton;
         public Button ExitButton;
+        public Shop Shop;
+
+        public bool IsActive;
 
         CanvasGroup canvasGroup;
-        Shop shop;
 
         public Action OnResetPlatform = delegate { };
 
         void Awake()
         {
-            DialogueButtons = GetComponentsInChildren<DialogueButton>();
+            Interactables = GetComponentsInChildren<Interactable>();
             canvasGroup = GetComponent<CanvasGroup>();
-            shop = UIManager.Instance.Shop;
+            Shop = UIManager.Instance.Shop;
 
             ResetButton.onClick.AddListener(ResetPlatform);
             ShopButton.onClick.AddListener(ToggleShop);
@@ -31,20 +33,21 @@ namespace PHOCUS.UI
 
         public void ToggleDialogue()
         {
+            IsActive = !IsActive;
             canvasGroup.alpha = canvasGroup.alpha == 0 ? 1 : 0;
             canvasGroup.blocksRaycasts = !canvasGroup.blocksRaycasts;
         }
 
         void ToggleShop()
         {
-            shop.ToggleShop();
+            Shop.ToggleShop();
             ToggleDialogue();
         }
 
         void ResetPlatform()
         {
-            OnResetPlatform();
             ToggleDialogue();
+            OnResetPlatform();
         }
     }
 }

@@ -342,8 +342,8 @@ MonoBehaviour:
   Damage: 10
   maxHealth: 30
   HealthBar: {fileID: 114163155434025370}
-  isAttacking: 0
-  isAlive: 1
+  IsAttacking: 0
+  IsAlive: 1
   State: 0
 --- !u!114 &114593052876800488
 MonoBehaviour:
