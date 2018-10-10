@@ -20,6 +20,7 @@ namespace PHOCUS.Character
         PlayerAnimation anim;
         PlayerMovement playerMovement;
         PlayerAttack playerAttack;
+        SpriteRenderer sprite;
         bool canDamage = true;
         int damage;
 
@@ -83,6 +84,7 @@ namespace PHOCUS.Character
         void Awake()
         {
             anim = GetComponent<PlayerAnimation>();
+            sprite = GetComponentInChildren<SpriteRenderer>();
             playerMovement = GetComponent<PlayerMovement>();
             playerAttack = GetComponent<PlayerAttack>();
             Health = MaxHealth;
@@ -116,6 +118,13 @@ namespace PHOCUS.Character
             }
         }
 
+        public void TriggerFallingDeath()
+        {
+            Health = 0;
+            sprite.sprite = null;
+            Time.timeScale = 0;
+        }
+
         public bool CheckStamina(float amount)
         {
             bool temp = amount < Stamina;
@@ -128,7 +137,6 @@ namespace PHOCUS.Character
                 return temp;
             }
         }
-
 
         public void AddGems(int amount)
         {

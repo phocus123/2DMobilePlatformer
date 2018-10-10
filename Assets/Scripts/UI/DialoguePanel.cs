@@ -5,7 +5,7 @@ using System;
 
 namespace PHOCUS.UI
 {
-    public class Dialogue : MonoBehaviour
+    public class DialoguePanel : MonoBehaviour
     {
         public Interactable[] Interactables;
         public TextMeshProUGUI mainText;

@@ -21,8 +21,10 @@ namespace PHOCUS.UI
         public float Speed;
         [Header("UI References")]
         public Shop Shop;
-        public Dialogue Dialogue;
+        public DialoguePanel DialoguePanel;
+        public GameOverPanel GameOverPanel;
         public Canvas WorldSpaceCanvas;
+        public TextMeshProUGUI TimerText;
 
         bool alertActive;
 
@@ -86,6 +88,11 @@ namespace PHOCUS.UI
             GameObject combatText = Instantiate(CombatTextPrefab, position, Quaternion.identity, WorldSpaceCanvas.transform);
             combatText.GetComponent<CombatText>().Initialise(combatTextType);
             combatText.GetComponent<TextMeshProUGUI>().text = healthValue.ToString();
+        }
+
+        public void SetTimerText(string time)
+        {
+            TimerText.text = time;
         }
     }
 }

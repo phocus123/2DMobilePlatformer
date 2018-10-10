@@ -52,10 +52,11 @@ namespace PHOCUS.UI
 
         public void DeselectItem()
         {
+            ItemNameText.color = defaultColor;
+            ItemCostText.color = defaultColor;
+
             if (!HasBeenPurchased)
             {
-                ItemNameText.color = defaultColor;
-                ItemCostText.color = defaultColor;
                 TogglePath();
             }
         }
@@ -67,6 +68,7 @@ namespace PHOCUS.UI
             Button button = GetComponent<Button>();
             button.interactable = false;
             HasBeenPurchased = true;
+            DeselectItem();
         }
 
         void TogglePath()

@@ -27,7 +27,7 @@ namespace PHOCUS.Environment
         [Header("Paths")]
         public PathController[] Paths;
 
-        Dialogue dialogue;
+        DialoguePanel dialoguePanel;
         List<Enemy> enemiesSpawned = new List<Enemy>();
         bool isReadyToSpawn;
         bool countdownTriggered;
@@ -40,12 +40,12 @@ namespace PHOCUS.Environment
         void Awake()
         {
             Portal = GetComponentInChildren<Portal>();
-            dialogue = UIManager.Instance.Dialogue;
+            dialoguePanel = UIManager.Instance.DialoguePanel;
         }
 
         void Start()
         {
-            dialogue.OnResetPlatform += ResetPlatform;    
+            dialoguePanel.OnResetPlatform += ResetPlatform;    
         }
 
         void Update()

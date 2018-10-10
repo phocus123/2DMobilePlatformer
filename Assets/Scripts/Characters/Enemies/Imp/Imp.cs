@@ -17,7 +17,7 @@ namespace PHOCUS.Character
                     anim.SetTrigger("Hit");
 
                 UIManager.Instance.UpdateEnemyHealth(HealthBar, Health / maxHealth);
-                UIManager.Instance.TriggerCombatText(new Vector3(transform.position.x, transform.position.y - 0.5f, 0f), damageAmount, CombatTextType.NormalDamage);
+                UIManager.Instance.TriggerCombatText(new Vector3(transform.position.x, transform.position.y + 0.5f, 0f), damageAmount, CombatTextType.NormalDamage);
 
                 StopCoroutine(ChasePlayer());
                 StopCoroutine(AttackTarget());

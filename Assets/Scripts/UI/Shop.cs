@@ -11,6 +11,7 @@ namespace PHOCUS.UI
     public class Shop : MonoBehaviour
     {
         public PlatformController Platform;
+        public Shopkeeper Shopkeeper;
         public GameObject ShopItemPrefab;
         public Transform ShopItemParent;
         public Camera PathCamera;
@@ -19,11 +20,28 @@ namespace PHOCUS.UI
         public Button ExitButton;
         public TextMeshProUGUI GemText;
         public CanvasGroup ShopCanvas;
-        public bool IsEnabled;
 
         ShopItem selectedItem;
         Player player;
-        bool pathsLoaded;
+        bool isEnabled;
+    
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                if (!isEnabled)
+                {
+                    LoadPaths();
+                    isEnabled = value;
+                }
+                else
+                { 
+                    DeletePaths();
+                    isEnabled = value;
+                }
+            }
+        }
 
         void Awake()
         {
@@ -42,9 +60,6 @@ namespace PHOCUS.UI
                 selectedItem = null;
             }
 
-            if (!pathsLoaded)
-                LoadPaths();
-
             UpdateGemsText();
             ShopCanvas.Toggle();
             IsEnabled = !IsEnabled;
@@ -53,13 +68,12 @@ namespace PHOCUS.UI
 
         void LoadPaths()
         {
-            pathsLoaded = true;
-
             foreach (PathController path in Platform.Paths)
             {
                 var go = Instantiate(ShopItemPrefab, ShopItemParent);
                 var item = go.GetComponent<ShopItem>();
                 Items.Add(item);
+                item.OnItemClicked += SelectItem;
 
                 item.ItemNameText.text = path.name.ToString();
                 item.ItemCostText.text = path.GemCost.ToString() + "G";
@@ -67,10 +81,31 @@ namespace PHOCUS.UI
                 item.PathController = path;
             }
 
-            foreach (var item in Items)
+            if (Shopkeeper.LoadedShopPaths)
             {
-                item.OnItemClicked += SelectItem;
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    if (Shopkeeper.ItemsPurchased[i])
+                    {
+                        Items[i].BuyItem();
+                    }
+                }
             }
+
+            Shopkeeper.ItemsPurchased.Clear();
+            Shopkeeper.LoadedShopPaths = true;
+        }
+
+        void DeletePaths()
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                Shopkeeper.ItemsPurchased.Add(Items[i].HasBeenPurchased);
+                Items[i].OnItemClicked -= SelectItem;
+                Destroy(Items[i].gameObject);
+            }
+
+            Items.Clear();
         }
 
         void SelectItem(ShopItem item)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using PHOCUS.Character;
+using PHOCUS.Utilities;
 
 public class Gem : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class Gem : MonoBehaviour
         {
             isTriggered = true;
             var player = collision.GetComponent<Player>();
+            GameManager.Instance.TotalGemCount += Gems;
             player.AddGems(Gems);
             Destroy(parent.gameObject);
         }

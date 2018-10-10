@@ -5,7 +5,6 @@ namespace PHOCUS.Utilities
 {
     public class BackgroundScroller : MonoBehaviour
     {
-        public Player player;
         public float xVelocity, yVelocity;
 
         Material material;

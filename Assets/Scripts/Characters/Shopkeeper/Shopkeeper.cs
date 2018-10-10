@@ -3,15 +3,18 @@ using PHOCUS.UI;
 using PHOCUS.Utilities;
 using PHOCUS.Environment;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace PHOCUS.Character
 {
     public class Shopkeeper : MonoBehaviour
     {
-        public Dialogue Dialogue;
+        public DialoguePanel DialoguePanel;
         public PlatformController Platform;
         public InteractableIndicator Indicator;
         public bool IsVisible;
+        public bool LoadedShopPaths;
+        public List<bool> ItemsPurchased = new List<bool>();
 
         SpriteRenderer spriteRenderer;
         BoxCollider2D boxCollider;
@@ -19,14 +22,14 @@ namespace PHOCUS.Character
 
         void Awake()
         {
-            Dialogue = UIManager.Instance.Dialogue;
+            DialoguePanel = UIManager.Instance.DialoguePanel;
             Indicator = GetComponentInChildren<InteractableIndicator>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             boxCollider = GetComponent<BoxCollider2D>();
             InteractableRaycaster ray = GameManager.Instance.InteractableRaycaster;
 
             ray.OnInteractableClicked += OnClicked;
-            Dialogue.OnResetPlatform += DestroyShopkeeper;
+            DialoguePanel.OnResetPlatform += DestroyShopkeeper;
         }
 
         public void SpawnShopkeeper()
@@ -38,8 +41,9 @@ namespace PHOCUS.Character
         {
             if (inTrigger)
             {
-                Dialogue.ToggleDialogue();
-                Dialogue.Shop.Platform = Platform;
+                DialoguePanel.ToggleDialogue();
+                DialoguePanel.Shop.Platform = Platform;
+                DialoguePanel.Shop.Shopkeeper = this;
             }
         }
 
@@ -75,8 +79,8 @@ namespace PHOCUS.Character
                     StartCoroutine(ToggleShopkeeper(false));
                 }
 
-                if (Dialogue.IsActive)
-                    Dialogue.ToggleDialogue();
+                if (DialoguePanel.IsActive)
+                    DialoguePanel.ToggleDialogue();
             }
         }
 
@@ -85,7 +89,7 @@ namespace PHOCUS.Character
             if (Platform.IsPlatformActive)
             {
                 Destroy(transform.gameObject);
-                Dialogue.OnResetPlatform -= DestroyShopkeeper;
+                DialoguePanel.OnResetPlatform -= DestroyShopkeeper;
             }
         }
 

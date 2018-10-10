@@ -20,7 +20,7 @@ namespace PHOCUS.Character
         PlayerMovement playerMovement;
         PlayerAnimation playerAnim;
         InteractableRaycaster ray;
-        Dialogue dialogue;
+        DialoguePanel dialogue;
 
         bool combo;
 
@@ -30,7 +30,7 @@ namespace PHOCUS.Character
             playerMovement = GetComponent<PlayerMovement>();
             playerAnim = GetComponent<PlayerAnimation>();
             ray = GameManager.Instance.InteractableRaycaster;
-            dialogue = UIManager.Instance.Dialogue;
+            dialogue = UIManager.Instance.DialoguePanel;
         }
 
         void Start()
@@ -101,6 +101,9 @@ namespace PHOCUS.Character
             {
                 if (AttackIndex == Mathf.Clamp(AttackIndex, 0, 3))
                     AttackIndex++;
+
+                if (AttackIndex > 3)
+                    AttackIndex = 1;
 
                 StartCoroutine(AttackTarget());
                 combo = false;

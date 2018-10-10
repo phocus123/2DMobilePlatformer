@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Bangers SDF Logo
   m_Shader: {fileID: 4800000, guid: f7ada0af4f174f0694ca6a487b8f543d, type: 3}
@@ -69,7 +69,7 @@ Material:
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.90909094
-    - _ScaleRatioB: 0.6136364
+    - _ScaleRatioB: 0.5568182
     - _ScaleRatioC: 0.90909094
     - _ScaleX: 1
     - _ScaleY: 1

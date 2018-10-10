@@ -84,7 +84,8 @@
     <Compile Include="Assets\Scripts\Environment\Portal.cs" />
     <Compile Include="Assets\Scripts\Environment\Spike.cs" />
     <Compile Include="Assets\Scripts\UI\CombatText.cs" />
-    <Compile Include="Assets\Scripts\UI\Dialogue.cs" />
+    <Compile Include="Assets\Scripts\UI\DialoguePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\GameOverPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Interactable.cs" />
     <Compile Include="Assets\Scripts\UI\InteractableIndicator.cs" />
     <Compile Include="Assets\Scripts\UI\Shop.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\InteractableRaycaster.cs" />
+    <Compile Include="Assets\Scripts\Utilities\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Singleton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
