@@ -117,7 +117,6 @@ C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\SyntaxTree.VisualStudio
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\Boo.Lang.PatternMatching.dll
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\Boo.Lang.Useful.dll
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\Unity.CecilTools.dll
-C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\Assembly-CSharp.pdb
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEngine.xml
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEditor.xml
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEngine.AIModule.xml

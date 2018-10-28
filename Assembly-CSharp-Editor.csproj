@@ -61,6 +61,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\PlayFabEditor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\ProgressBar.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\SubMenuComponent.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleDataEditor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleDataViewer.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleInternalDataEditor.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\TitleInternalDataViewer.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorAuthenticate.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorDataMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorHeader.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorHelpMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorSDKTools.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorSettings.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Panels\PlayFabEditorToolsMenu.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\ISerializer.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\PlayFabEditorApi.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\PlayFabEditorHttp.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\PlayFabEditorModels.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\PlayFabEditorSDK\SimpleJson.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\EditorCoroutine.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorDataService.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorHelper.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorPrefsSO.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorUtils.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabEditorVersion.cs" />
+    <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Utils\PlayFabGuiFieldHelper.cs" />
+    <Compile Include="Assets\PlayFabSdk\Shared\Editor\PlayFabHelp.cs" />
+    <Compile Include="Assets\PlayFabSdk\Shared\Models\Editor\MakeSharedSettingsObj.cs" />
     <Compile Include="Assets\Tilemap\Brushes\Coordinate Brush\Scripts\Editor\CoordinateBrush.cs" />
     <Compile Include="Assets\Tilemap\Brushes\GameObject Brush\Scripts\Editor\GameObjectBrush.cs" />
     <Compile Include="Assets\Tilemap\Brushes\Line Brush\Scripts\Editor\LineBrush.cs" />
