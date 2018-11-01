@@ -1,7 +1,7 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using PHOCUS.Utilities;
 
 namespace PHOCUS.UI
@@ -12,8 +12,10 @@ namespace PHOCUS.UI
         public Button RestartButton;
         public Button QuitButton;
         public TextMeshProUGUI ScoreText;
+        public TextMeshProUGUI LivesText;
 
-        public Action OnRestart = delegate { };
+        public Action OnRestartClicked = delegate { };
+        public Action OnQuitClicked = delegate { };
 
         void Awake()
         {
@@ -26,30 +28,30 @@ namespace PHOCUS.UI
 
         void Start()
         {
-            RestartButton.onClick.AddListener(Restart);
-            QuitButton.onClick.AddListener(Quit);
-        }
-
-        public void TogglePanel()
-        {
-            CanvasGroup.alpha = CanvasGroup.alpha == 0 ? 1 : 0;
-            CanvasGroup.blocksRaycasts = CanvasGroup.blocksRaycasts == false ? true : false;
-        }
-
-        void Restart()
-        {
-            OnRestart();
-            TogglePanel();
-        }
-
-        void Quit()
-        {
-            MenuManager.Instance.LoadScene(0);
+            RestartButton.onClick.AddListener(RestartClicked);
+            QuitButton.onClick.AddListener(QuitClicked);
         }
 
         public void SetScore(string score)
         {
             ScoreText.text = score;
+        }
+
+        public void SetLives(string lives, string coins)
+        {
+            string livesText = string.Format("Lives Remaining: {0}", lives);
+            LivesText.text = livesText;
+        }
+
+        void RestartClicked()
+        {
+            OnRestartClicked();
+            CanvasGroup.Toggle();
+        }
+
+        void QuitClicked()
+        {
+            OnQuitClicked();
         }
     }
 }

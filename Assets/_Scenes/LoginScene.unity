@@ -348,8 +348,8 @@ MonoBehaviour:
   m_VerticalScrollbar: {fileID: 0}
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_RichText: 1
   m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_OnFocusSelectAll: 1
+  m_OnFocusSelectAll: 0
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 1
@@ -3321,7 +3321,7 @@ MonoBehaviour:
   CancelButton: {fileID: 1424838650}
   Login: {fileID: 1969944725}
   LoginCanvas: {fileID: 1791989437}
-  LoginAlertCanvas: {fileID: 0}
+  LoginAlertCanvas: {fileID: 656525639}
   LoginAlertText: {fileID: 407760515}
   LoginEmailInput: {fileID: 1944174054}
   LoginPasswordInput: {fileID: 146147743}

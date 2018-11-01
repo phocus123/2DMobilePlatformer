@@ -20,7 +20,10 @@ namespace PHOCUS.Utilities
 
         void Awake()
         {
-            UIManager.Instance.GameOverPanel.OnRestart += Restart;
+            UIManager.Instance.GameOverPanel.OnRestartClicked += CheckLives;
+            UIManager.Instance.GameOverPanel.OnQuitClicked += ReturnToMenu;
+            PlayFabCurrencyManager.Instance.OnReceivedCurrency += UIManager.Instance.GameOverPanel.SetLives;
+            PlayFabCurrencyManager.Instance.OnPlayerHasLives += Restart;
             Time.timeScale = 1;
             StartCoroutine(StartTimer());
         }
@@ -41,8 +44,10 @@ namespace PHOCUS.Utilities
                 DetermineScore();
 
                 string scoreText = string.Format("Final Score: {0}", finalScore);
+                PlayFabCurrencyManager.Instance.SubtractLife();
+                PlayFabCurrencyManager.Instance.AddCoins(CoinCount);
                 UIManager.instance.GameOverPanel.SetScore(scoreText);
-                UIManager.instance.GameOverPanel.TogglePanel();
+                UIManager.instance.GameOverPanel.CanvasGroup.Toggle();
             }
         }
 
@@ -64,10 +69,30 @@ namespace PHOCUS.Utilities
             }
         }
 
-        void Restart()
+        void CheckLives()
         {
-            gameOver = false;
-            timerActive = false;
+            PlayFabCurrencyManager.Instance.CheckLives();
+        }
+
+        void Restart(bool restart)
+        {
+            if (restart)
+            {
+                gameOver = false;
+                timerActive = false;
+                SceneManager.LoadScene(2);
+            }
+            else
+            {
+                Destroy(Player.gameObject);
+                Time.timeScale = 1;
+                StartCoroutine(ReturnToMenuCountdown());
+            }
+        }
+
+        void ReturnToMenu()
+        {
+            PlayFabCurrencyManager.Instance.OnReceivedCurrency -= UIManager.Instance.GameOverPanel.SetLives;
             SceneManager.LoadScene(1);
         }
 
@@ -75,9 +100,25 @@ namespace PHOCUS.Utilities
         {
             int gems = TotalGemCount;
             int time = (int)timeElapsed;
-            PlayerAccount.Instance.AddCoins(CoinCount);
 
             finalScore = ((time / 4) * gems);
+        }
+
+        IEnumerator ReturnToMenuCountdown()
+        {
+            float countdown = 3f;
+            float progress = 0f;
+
+            while (progress < countdown)
+            {
+                progress += Time.deltaTime;
+                float timeRemaining = countdown - progress;
+                string time = string.Format("You are out of lives. Returning to menu in {0} seconds", Mathf.Round(timeRemaining));
+                UIManager.Instance.SetAlertText(time);
+                yield return null;
+            }
+
+            SceneManager.LoadScene(1);
         }
     }
 }

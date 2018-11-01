@@ -97,6 +97,7 @@
     <Compile Include="Assets\_Scripts\UI\Interactable.cs" />
     <Compile Include="Assets\_Scripts\UI\InteractableIndicator.cs" />
     <Compile Include="Assets\_Scripts\UI\LoginUI.cs" />
+    <Compile Include="Assets\_Scripts\UI\MenuUI.cs" />
     <Compile Include="Assets\_Scripts\UI\Shop.cs" />
     <Compile Include="Assets\_Scripts\UI\ShopButton.cs" />
     <Compile Include="Assets\_Scripts\UI\UIManager.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Assets\_Scripts\Utilities\InteractableRaycaster.cs" />
     <Compile Include="Assets\_Scripts\Utilities\MenuManager.cs" />
     <Compile Include="Assets\_Scripts\Utilities\PlayerAccount.cs" />
+    <Compile Include="Assets\_Scripts\Utilities\PlayFab\PlayFabCurrencyManager.cs" />
     <Compile Include="Assets\_Scripts\Utilities\PlayFab\PlayFabLogin.cs" />
     <Compile Include="Assets\_Scripts\Utilities\PlayFab\PlayFabRegister.cs" />
     <Compile Include="Assets\_Scripts\Utilities\Singleton.cs" />

@@ -163,7 +163,6 @@ C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEngine.Networking.
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.xml
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEngine.HoloLens.xml
 C:\Users\mark_\Desktop\2DMobilePlatformer\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
-C:\Users\mark_\Desktop\2DMobilePlatformer\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
 C:\Users\mark_\Desktop\2DMobilePlatformer\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 C:\Users\mark_\Desktop\2DMobilePlatformer\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\mark_\Desktop\2DMobilePlatformer\obj\Debug\Assembly-CSharp.dll

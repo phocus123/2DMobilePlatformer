@@ -1,50 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using TMPro;
 
 namespace PHOCUS.Utilities
 {
-    public class MenuManager : Singleton<MenuManager>
+    public class MenuManager : MonoBehaviour
     {
-        public Button PlayButton;
-        public Button LeaderboardsButton;
-        public Button SettingsButton;
-        public Button ExitButton;
-        public TextMeshProUGUI CoinsText;
-        public TextMeshProUGUI AccountNameText;
-        public TextMeshProUGUI AccountLevelText;
-
         void Awake()
         {
-            DontDestroyOnLoad(gameObject);
-
-            PlayButton.onClick.AddListener(() => LoadScene(1));
-            ExitButton.onClick.AddListener(QuitGame);
-
-            UpdateAccountDetails();
-            UpdateGemCount();
+            PlayFabCurrencyManager.Instance.OnPlayerHasLives += StartGame;     
         }
 
-        public void LoadScene(int index)
+        void StartGame(bool start)
         {
-            SceneManager.LoadScene(index);
-        }
-
-        void QuitGame()
-        {
-            Application.Quit();
-        }
-
-        void UpdateGemCount()
-        {
-            CoinsText.text = PlayerAccount.Instance.Coins.ToString();
-        }
-
-        void UpdateAccountDetails()
-        {
-            AccountNameText.text = PlayerAccount.Instance.DisplayName;
-            AccountLevelText.text = string.Format("Level: {0}", PlayerAccount.Instance.AccountLevel.ToString());
+            if (start)
+                SceneManager.LoadScene(2);
+            else
+            {
+                print("You have no lives");
+                // TODO show UI
+            }
         }
     }
 }
